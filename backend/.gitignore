@@ -1,0 +1,14 @@
+# Dependencies
+
+
+# Production build
+
+
+# Environment files
+.env
+.env.*
+
+# System files
+__pycache__
+
+# Logs
