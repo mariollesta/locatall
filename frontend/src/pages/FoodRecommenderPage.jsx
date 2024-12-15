@@ -7,16 +7,18 @@ import Footer from "@components/Footer";
 
 export function FoodRecommenderPage () {
   return (
-    <div className="flex flex-col min-h-screen items-center bg-gray-100">
-
-      <Title />
-
-      <FoodRecommender />
-
-      <FoodResult />
-
+    <div className="min-h-screen flex flex-col  items-center bg-gray-50">
+      
+      <main className="flex-grow flex flex-col items-center justify-center px-4">
+        <Title />
+        <div className="max-w-md w-full">
+          <FoodRecommender />
+          <FoodResult />
+        </div>
+        
+      </main>
+      
       <Footer />
-
     </div>
   );
 };
