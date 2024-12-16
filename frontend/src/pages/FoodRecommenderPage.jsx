@@ -2,7 +2,6 @@ import React from "react";
 
 import Title from "@components/Title";
 import { FoodRecommender } from "@components/FoodRecommender"
-import { FoodResult } from "@components/FoodResult";
 import Footer from "@components/Footer";
 
 export function FoodRecommenderPage () {
@@ -13,9 +12,7 @@ export function FoodRecommenderPage () {
         <Title />
         <div className="max-w-md w-full">
           <FoodRecommender />
-          <FoodResult />
         </div>
-        
       </main>
       
       <Footer />

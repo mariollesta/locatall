@@ -1,12 +1,29 @@
 import React from "react";
+import { MapPin, Star } from "lucide-react";
 
-export function FoodResult () {
+export function FoodResult({ name, rating }) {
   return (
-    <div className="w-full max-w-lg bg-white rounded-lg shadow-lg p-6 mt-6">
-      <h2 className="text-2xl font-semibold text-gray-800">Restaurante Sugerido</h2>
-      <p className="text-gray-600 mt-2">
-        Aquí aparecerá el restaurante recomendado cerca de tu ubicación.
-      </p>
+    <div className="flex items-center bg-white rounded-lg shadow-md overflow-hidden p-4">
+      {/* Imagen del restaurante */}
+      <div className="w-16 h-16 bg-gray-200 rounded-md mr-4"></div>
+      {/* Detalles del restaurante */}
+      <div className="flex-grow">
+        <h3 className="text-lg font-semibold">{name}</h3>
+        {rating && (
+          <div className="flex items-center mt-1 text-yellow-500">
+            <Star className="w-4 h-4 mr-1" />
+            <span>{rating}</span>
+          </div>
+        )}
+      </div>
+      {/* Botón de mapa */}
+      <button
+        className="flex items-center px-3 py-2 bg-gray-100 rounded-md hover:bg-gray-200"
+        onClick={() => alert(`Mostrar ${name} en el mapa`)}
+      >
+        <MapPin className="w-4 h-4 mr-2" />
+        Ver en Maps
+      </button>
     </div>
   );
-};
+}
