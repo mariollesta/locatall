@@ -5,10 +5,12 @@ import { ResetRecommender } from "@components/ResetRecommender";
 import { FoodResult } from "@components/FoodResult";
 
 export const FoodRecommender = () => {
-  const [distance, setDistance] = useState("1");
-  const [showRecommendations, setShowRecommendations] = useState(false);
+  const [distance, setDistance] = useState("1"); // distance state
+  const [showRecommendations, setShowRecommendations] = useState(false); // show results 
+  const [location, setLocation] = useState(null); // current location state
+  const [recommendations, setRecommendations] = useState([]); // results state
 
-  const recommendations = [
+  const dummyRecommendations = [
     { name: "Sushi Delight", rating: 4.8 },
     { name: "Burger Haven", rating: 4.6 },
     { name: "Pasta Paradise", rating: 4.7 },
@@ -17,12 +19,16 @@ export const FoodRecommender = () => {
   ];
 
   const handleFindPlace = () => {
+    // Logic could be added here based on current location
+    setRecommendations(dummyRecommendations); // here we update the results 
     setShowRecommendations(true);
   };
 
   const handleReset = () => {
     setDistance("1");
     setShowRecommendations(false);
+    setRecommendations([]);
+    setLocation(null);
   };
 
   return (
@@ -70,12 +76,11 @@ export const FoodRecommender = () => {
       ) : (
         <>
           <div className="mb-6 text-center">
-            {/* Uso de ResetRecommender */}
             <ResetRecommender resetSearch={handleReset} />
           </div>
           <div className="space-y-4">
             <h2 className="text-2xl font-semibold text-center mb-4">
-              Top 5 recomendaciones
+              Top {recommendations.length} recomendaciones
             </h2>
             {recommendations.map((place, index) => (
               <FoodResult key={index} name={place.name} rating={place.rating} />
