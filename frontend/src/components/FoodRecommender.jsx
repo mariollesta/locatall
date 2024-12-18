@@ -20,6 +20,7 @@ export const FoodRecommender = () => {
   ];
 
   const handleFindPlace = () => {
+
     if (!navigator.geolocation) {
       setError("Tu navegador no soporta geolocalización.");
       return;
@@ -36,13 +37,28 @@ export const FoodRecommender = () => {
         setRecommendations(dummyRecommendations);
         setShowRecommendations(true);
       },
-      (err) => {
-        setError("No se pudo obtener la ubicación. Por favor, verifica los permisos.");
+      (error) => {
+        switch(error.code) {
+          case error.PERMISSION_DENIED:
+            errorMsg = "Permiso de geolocalización denegado. Por favor, habilita los permisos en la configuración de tu navegador."
+            break;
+          case error.POSITION_UNAVAILABLE:
+            errorMsg = "La información de ubicación no está disponible. Intenta nuevamente más tarde."
+            break;
+          case error.TIMEOUT:
+            errorMsg = "El tiempo de espera para obtener la ubicación se ha agotado. Intenta nuevamente."
+            break;
+          default:
+            errorMsg = "Ocurrió un error desconocido."
+            break;
+        }
+        setError(errorMsg);
         console.error("Error de geolocalización:", err);
-      }
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
     );
   };
-
+  
   const handleReset = () => {
     setDistance("1");
     setShowRecommendations(false);
