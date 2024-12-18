@@ -9,6 +9,7 @@ export const FoodRecommender = () => {
   const [showRecommendations, setShowRecommendations] = useState(false); // show results 
   const [location, setLocation] = useState(null); // current location state
   const [recommendations, setRecommendations] = useState([]); // results state
+  const [error, setError] = useState(null); // error state for geolocation
 
   const dummyRecommendations = [
     { name: "Sushi Delight", rating: 4.8 },
@@ -19,9 +20,27 @@ export const FoodRecommender = () => {
   ];
 
   const handleFindPlace = () => {
-    // Logic could be added here based on current location
-    setRecommendations(dummyRecommendations); // here we update the results 
-    setShowRecommendations(true);
+    if (!navigator.geolocation) {
+      setError("Tu navegador no soporta geolocalización.");
+      return;
+    }
+
+    setError(null); // Reset any previous error
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setLocation({ latitude, longitude });
+        console.log("Ubicación obtenida:", latitude, longitude);
+
+        // Simular resultados basados en ubicación
+        setRecommendations(dummyRecommendations);
+        setShowRecommendations(true);
+      },
+      (err) => {
+        setError("No se pudo obtener la ubicación. Por favor, verifica los permisos.");
+        console.error("Error de geolocalización:", err);
+      }
+    );
   };
 
   const handleReset = () => {
@@ -29,6 +48,7 @@ export const FoodRecommender = () => {
     setShowRecommendations(false);
     setRecommendations([]);
     setLocation(null);
+    setError(null);
   };
 
   return (
@@ -39,6 +59,11 @@ export const FoodRecommender = () => {
           <p className="text-gray-600 mb-8">
             Los mejores lugares para comer cerca de ti.
           </p>
+          {error && (
+            <div className="text-red-500 mb-4">
+              {error}
+            </div>
+          )}
           <div className="mb-8">
             <h3 className="text-lg font-medium mb-4">Buscar por distancia</h3>
             <div className="flex flex-col space-y-2">
