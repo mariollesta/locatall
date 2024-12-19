@@ -1,0 +1,59 @@
+ROADMAP v0.1.0
+
+1. Configuración del entorno
+    - Inicializar el proyecto de React con Vite.
+    - Instalar Tailwind CSS y configurar el archivo tailwind.config.js.
+    - Configurar FastAPI en un entorno virtual de Python.
+    - Configurar el servidor de desarrollo para React (puerto) y FastAPI (puerto separado).
+
+2. Diseño e implementación del frontend
+    - Crear la estructura básica del proyecto.
+    - Diseñar la interfaz principal con Tailwind CSS:
+        Estructura: título, botón, tarjeta de resultado.
+        Diseño responsive.
+    - Crear un estado básico en React para manejar el flujo:
+        Estado para la ubicación actual.
+        Estado para los resultados.
+    - Implementar el botón de geolocalización:
+        Usar la API de geolocalización del navegador.
+        Manejar errores si el usuario deniega el permiso.
+    - Añadir lógica para mostrar un estado de "cargando" al buscar.
+
+3. Backend con FastAPI
+    - Crear el endpoint para obtener restaurantes cercanos:
+        /restaurants?lat=<latitude>&lng=<longitude>.
+        Conectar con la API de Google Places para devolver datos filtrados.
+    - Configurar dependencias y variables de entorno para manejar:
+        Clave API de Google Places.
+        Configuración de CORS para permitir peticiones desde React.
+    - Implementar manejo de errores en el endpoint.
+    - Probar el endpoint con herramientas como ThunderClient o Postman.
+
+4. Conexión frontend-backend
+    - Usar fetch o axios en React para llamar al endpoint del backend:
+        Pasar latitud y longitud desde la geolocalización.
+        Manejar la respuesta para mostrar resultados en el frontend.
+    - Implementar un control básico de errores si no hay resultados.
+    - Probar la integración completa: clic en el botón → resultados en pantalla.
+
+5. Mejora de la funcionalidad
+    - Implementar un botón para "intentar de nuevo" (nueva recomendación aleatoria).
+    - Optimizar los resultados del backend:
+        Filtrar mejor por horarios o distancia.
+    - Añadir enlace para abrir el restaurante en Google Maps desde el resultado.
+
+6. Optimización y despliegue
+    - Revisar y limpiar el código.
+    - Preparar el backend para despliegue:
+        Usar Uvicorn o configurar con Gunicorn para producción.
+    - Preparar el frontend para despliegue:
+        Usar vite build para generar la versión estática.
+    - Publicar la app:
+        Frontend: en Netlify o Vercel.
+        Backend: en Render, Railway, o un servidor similar.
+    - Configurar variables de entorno en los servicios de despliegue.
+
+Extras (opcional)
+    - Analytics: Añadir seguimiento básico con Google Analytics.
+    - Dark mode: Implementar un tema oscuro con Tailwind CSS.
+    - PWA: Convertir la app en una Progressive Web App para ser usada como aplicación móvil.
