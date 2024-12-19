@@ -9,6 +9,7 @@ export const FoodRecommender = () => {
   const [showRecommendations, setShowRecommendations] = useState(false); // show results 
   const [location, setLocation] = useState(null); // current location state
   const [recommendations, setRecommendations] = useState([]); // results state
+  const [isLoading, setIsLoading] = useState(false); // loading state
   const [error, setError] = useState(null); // error state for geolocation
 
   const dummyRecommendations = [
@@ -26,16 +27,22 @@ export const FoodRecommender = () => {
       return;
     }
 
+    setIsLoading(true);
     setError(null); // Reset any previous error
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
+
         setLocation({ latitude, longitude });
         console.log("Ubicación obtenida:", latitude, longitude);
 
-        // Simular resultados basados en ubicación
-        setRecommendations(dummyRecommendations);
-        setShowRecommendations(true);
+        // Simular resultados con un tiempo de espera
+        setTimeout(() => {
+          setRecommendations(dummyRecommendations);
+          setShowRecommendations(true);
+          setIsLoading(false);
+        }, 3000);
       },
       (error) => {
         switch(error.code) {
@@ -107,12 +114,26 @@ export const FoodRecommender = () => {
               ))}
             </div>
           </div>
-          <button
-            onClick={handleFindPlace}
-            className="bg-blue-500 text-white rounded-lg shadow-md px-6 py-3 font-medium hover:bg-blue-600 transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-          >
-            Buscar restaurantes
-          </button>
+          <div className="flex flex-col items-center justify-center">
+            <button
+              onClick={handleFindPlace}
+              disabled={isLoading}
+              className={`${
+                isLoading
+                  ? "cursor-not-allowed bg-blue-400"
+                  : "bg-blue-500 hover:bg-blue-600"
+              } text-white rounded-lg shadow-md px-6 py-3 font-medium transition duration-300 ease-in-out transform focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 flex items-center justify-center`}
+            >
+              {isLoading ? (
+                <>
+                  <div className="w-5 h-5 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mr-2"></div>
+                  Buscando...
+                </>
+              ) : (
+                "Buscar Lugares"
+              )}
+            </button>
+          </div>
         </div>
       ) : (
         <>
