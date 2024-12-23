@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import restaurants
@@ -16,4 +17,5 @@ app.include_router(restaurants.router, prefix="/api", tags=["restaurants"])
 
 @app.get("/")
 def read_root():
-    return {"message": "¡Hola, mundo desde FastAPI!"}
+    google_api_key = os.getenv("GOOGLE_PLACES_API_KEY")
+    return {"message": f"¡Hola, mundo desde FastAPI! Tu API Key es {google_api_key}"}
