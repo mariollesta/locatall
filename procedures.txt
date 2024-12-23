@@ -1,0 +1,49 @@
+Steps to obtain the Google Places API Key
+
+1. Log in to Google Cloud Console
+    Go to the Google Cloud Console page:
+    https://console.cloud.google.com/
+    Make sure you are logged in with a Google account.
+
+2. Create a Project
+    Click on the project selector at the top (it may say something like “Select Project”).
+    Select “New Project” and give it a name (for example, “Food Recommender”).
+    Click “Create”.
+
+3. Enable the Google Places API
+    Once the project is created, in the side menu, go to “APIs and services” > “Library”.
+    Search for “Places API” in the search bar.
+    Select Places API and click “Enable”.
+
+4. Create an API Key
+    Go to “APIs & Services” > “Credentials”.
+    Click “Create Credentials” and select “API Key”.
+    An API key will be generated that you can copy and save.
+
+5. Restrict API Key Usage (Optional but Recommended)
+    In the “Credentials” section, select the newly created API Key.
+    Under Key Restrictions, perform the following steps:
+    Application Restrictions:
+    If you are developing from a specific domain, select “HTTP Referrers (websites)” and indicate your allowed URLs during development.
+    API Restrictions:
+    Check “Restrict key” and select Places API only.
+    Save your changes.
+
+6. Configure your Key in the .env file
+    Save the API Key in your .env file to keep it secure
+
+
+Steps to enable billing in a project
+
+1. Enable Billing in your Project
+    Go to Google Cloud Console.
+    Select your current project.
+    Go to Billing in the side menu.
+    If you do not have a billing account:
+    Create a new billing account.
+        Add a valid payment method.
+    Associate your project with the billing account you just created.
+
+2. Check the Billing Status
+    Once the billing is set up, go back to the APIs & Services > APIs & Services > Library menu. Library.
+    Make sure that the Google Places API is enabled for your project.
