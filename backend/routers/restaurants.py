@@ -13,8 +13,11 @@ if not GOOGLE_PLACES_API_KEY:
 router = APIRouter()
 
 @router.get("/restaurants")
-def get_nearby_restaurants(lat: float = Query(..., description="Latitude of the location"),
-                           lng: float = Query(..., description="Longitude of the location")):
+def get_nearby_restaurants(
+    lat: float = Query(..., description="Latitude of the location"),
+    lng: float = Query(..., description="Longitude of the location"),
+    radius: int = Query(1000, description="Search radius in meters (default 1 km)"),
+):
     """
     Get nearby restaurants using Google Places API.
     """
@@ -25,7 +28,7 @@ def get_nearby_restaurants(lat: float = Query(..., description="Latitude of the 
         # Request parameters
         params = {
             "location": f"{lat},{lng}",
-            "radius": 5000,  # Search radius in meters (5 km)
+            "radius": radius,  # Use the radius from the query parameter
             "type": "restaurant",
             "key": GOOGLE_PLACES_API_KEY,
         }
