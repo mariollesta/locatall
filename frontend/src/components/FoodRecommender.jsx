@@ -12,59 +12,73 @@ export const FoodRecommender = () => {
   const [isLoading, setIsLoading] = useState(false); // loading state
   const [error, setError] = useState(null); // error state for geolocation
 
-  const dummyRecommendations = [
-    { name: "Sushi Delight", rating: 4.8 },
-    { name: "Burger Haven", rating: 4.6 },
-    { name: "Pasta Paradise", rating: 4.7 },
-    { name: "Taco Town", rating: 4.5 },
-    { name: "Veggie Venture", rating: 4.9 },
-  ];
-
   const handleFindPlace = () => {
-
     if (!navigator.geolocation) {
       setError("Tu navegador no soporta geolocalización.");
       return;
     }
-
+  
     setIsLoading(true);
     setError(null); // Reset any previous error
-
+  
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      async (position) => {
         const { latitude, longitude } = position.coords;
-
         setLocation({ latitude, longitude });
         console.log("Ubicación obtenida:", latitude, longitude);
-
-        // Simular resultados con un tiempo de espera
-        setTimeout(() => {
-          setRecommendations(dummyRecommendations);
-          setShowRecommendations(true);
+  
+        try {
+          // Llamar al backend con axios o fetch
+          const response = await fetch(
+            `http://localhost:8000/api/restaurants?lat=${latitude}&lng=${longitude}`
+          );
+  
+          if (!response.ok) {
+            throw new Error(`Error del servidor: ${response.statusText}`);
+          }
+  
+          const data = await response.json();
+  
+          if (data.success) {
+            setRecommendations(data.data); // Actualizar recomendaciones
+            setShowRecommendations(true);
+          } else {
+            throw new Error(data.error || "Error desconocido.");
+          }
+        } catch (error) {
+          setError(error.message || "Error al obtener datos.");
+          console.error("Error al buscar restaurantes:", error);
+        } finally {
           setIsLoading(false);
-        }, 3000);
+        }
       },
       (error) => {
-        switch(error.code) {
+        let errorMsg;
+        switch (error.code) {
           case error.PERMISSION_DENIED:
-            errorMsg = "Permiso de geolocalización denegado. Por favor, habilita los permisos en la configuración de tu navegador."
+            errorMsg =
+              "Permiso de geolocalización denegado. Por favor, habilita los permisos en la configuración de tu navegador.";
             break;
           case error.POSITION_UNAVAILABLE:
-            errorMsg = "La información de ubicación no está disponible. Intenta nuevamente más tarde."
+            errorMsg =
+              "La información de ubicación no está disponible. Intenta nuevamente más tarde.";
             break;
           case error.TIMEOUT:
-            errorMsg = "El tiempo de espera para obtener la ubicación se ha agotado. Intenta nuevamente."
+            errorMsg =
+              "El tiempo de espera para obtener la ubicación se ha agotado. Intenta nuevamente.";
             break;
           default:
-            errorMsg = "Ocurrió un error desconocido."
+            errorMsg = "Ocurrió un error desconocido.";
             break;
         }
         setError(errorMsg);
-        console.error("Error de geolocalización:", err);
+        console.error("Error de geolocalización:", error);
+        setIsLoading(false);
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
     );
   };
+  
   
   const handleReset = () => {
     setDistance("1");
