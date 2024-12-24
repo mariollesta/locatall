@@ -37,7 +37,7 @@ ROADMAP v0.1.0
     - Probar la integración completa: clic en el botón → resultados en pantalla.
 
 5. Mejora de la funcionalidad
-    - Implementar un botón para "intentar de nuevo" (nueva recomendación aleatoria).
+    - Implementar un botón para "reiniciar" (nueva recomendación).
     - Optimizar los resultados del backend:
         Filtrar mejor por horarios o distancia.
     - Añadir enlace para abrir el restaurante en Google Maps desde el resultado.
