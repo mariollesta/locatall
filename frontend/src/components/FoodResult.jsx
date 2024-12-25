@@ -6,7 +6,6 @@ export function FoodResult({ name, rating, icon}) {
     <div className="flex items-center bg-white rounded-lg shadow-md overflow-hidden p-4">
 
       {/* Imagen del restaurante */}
-      {/*
       <div className="w-16 h-16 rounded-md mr-4 overflow-hidden">
         {icon ? (
           <img 
