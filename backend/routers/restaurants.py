@@ -51,10 +51,6 @@ def get_nearby_restaurants(
                 "name": place.get("name"),
                 "rating": place.get("rating"),
                 "address": place.get("vicinity"),
-                "icon": place.get("icon"),  # Use icon URL for restaurant icon
-                "photo_reference": (
-                    place.get("photos", [{}])[0].get("photo_reference")
-                ),
             }
             for place in data.get("results", [])
         ]

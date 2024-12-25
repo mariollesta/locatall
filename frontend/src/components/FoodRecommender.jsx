@@ -134,7 +134,6 @@ export const FoodRecommender = () => {
                 key={index} 
                 name={place.name} 
                 rating={place.rating} 
-                icon={place.icon}
               />
             ))}
           </div>
