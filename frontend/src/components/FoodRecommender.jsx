@@ -130,7 +130,12 @@ export const FoodRecommender = () => {
               Top {recommendations.length} recomendaciones
             </h2>
             {recommendations.map((place, index) => (
-              <FoodResult key={index} name={place.name} rating={place.rating} />
+              <FoodResult 
+                key={index} 
+                name={place.name} 
+                rating={place.rating} 
+                icon={place.icon}
+              />
             ))}
           </div>
         </>

@@ -19,21 +19,21 @@ def get_nearby_restaurants(
     radius: int = Query(1000, description="Search radius in meters (default 1 km)"),
 ):
     """
-    Get nearby restaurants using Google Places API.
+    Get nearby restaurants using Google Places API (Nearby Search - New).
     """
     try:
-        # Google Places API base URL
+        # Google Places API base URL for Nearby Search (New)
         url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
 
         # Request parameters
         params = {
             "location": f"{lat},{lng}",
-            "radius": radius,  # Use the radius from the query parameter
+            "radius": radius,
             "type": "restaurant",
             "key": GOOGLE_PLACES_API_KEY,
         }
 
-        # Send request to Google Places API
+        # Send GET request to Google Places API
         response = requests.get(url, params=params)
         response.raise_for_status()  # Raise HTTP errors
 
@@ -51,6 +51,10 @@ def get_nearby_restaurants(
                 "name": place.get("name"),
                 "rating": place.get("rating"),
                 "address": place.get("vicinity"),
+                "icon": place.get("icon"),  # Use icon URL for restaurant icon
+                "photo_reference": (
+                    place.get("photos", [{}])[0].get("photo_reference")
+                ),
             }
             for place in data.get("results", [])
         ]
