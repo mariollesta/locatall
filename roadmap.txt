@@ -39,6 +39,7 @@ ROADMAP v0.1.0
 5. Mejora de la funcionalidad
     - Implementar un botón para "reiniciar" (nueva recomendación).
     - Optimizar los resultados del backend:
+        Pedir a la API los campos estrictamente necesarios.
         Filtrar mejor por horarios o distancia.
     - Añadir enlace para abrir el restaurante en Google Maps desde el resultado.
 
