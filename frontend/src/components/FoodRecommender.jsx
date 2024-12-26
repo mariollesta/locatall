@@ -75,7 +75,7 @@ export const FoodRecommender = () => {
           <div className="mb-8">
             <h3 className="text-lg font-medium mb-4">Buscar por distancia</h3>
             <div className="flex flex-col space-y-2">
-              {[{ value: "1", label: "A menos de 1 km" },
+              {[{ value: "0.1", label: "A menos de 1 km" },
                 { value: "5", label: "A menos de 5 km" },
                 { value: "10", label: "A menos de 10 km" },
               ].map((option) => (
@@ -127,15 +127,24 @@ export const FoodRecommender = () => {
           </div>
           <div className="space-y-4">
             <h2 className="text-2xl font-semibold text-center mb-4">
-              Top {recommendations.length} recomendaciones
+              {recommendations.length > 0 
+                ? `Top ${recommendations.length} recomendaciones` 
+                : "No se encontraron lugares cercanos"}
             </h2>
-            {recommendations.map((place, index) => (
-              <FoodResult 
-                key={index} 
-                name={place.name} 
-                rating={place.rating} 
-              />
-            ))}
+
+            {recommendations.length > 0 ? (
+              recommendations.map((place, index) => (
+                <FoodResult 
+                  key={index} 
+                  name={place.name} 
+                  rating={place.rating} 
+                />
+              ))
+            ) : (
+              <div className="text-center text-gray-500">
+                Ajusta la distancia de búsqueda o verifica tu ubicación
+              </div>
+            )}
           </div>
         </>
       )}

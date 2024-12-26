@@ -1,7 +1,7 @@
 import React from "react";
 import { MapPin, Star } from "lucide-react";
 
-export function FoodResult({ name, rating, icon}) {
+export function FoodResult({ name, rating }) {
   return (
     <div className="flex items-center bg-white rounded-lg shadow-md overflow-hidden p-4">
 
