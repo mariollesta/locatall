@@ -2,6 +2,12 @@ import React from "react";
 import { MapPin, Star } from "lucide-react";
 
 export function FoodResult({ name, rating }) {
+  
+  const generateGoogleMapsLink = (restaurantName) => {
+    const baseUrl = "https://www.google.com/maps/search/?api=1&query=";
+    return `${baseUrl}${encodeURIComponent(restaurantName)}`;
+  };
+
   return (
     <div className="flex items-center bg-white rounded-lg shadow-md overflow-hidden p-4">
       
@@ -17,14 +23,15 @@ export function FoodResult({ name, rating }) {
       </div>
       
       {/* Map Button */}
-      <button
+      <a
+        href={generateGoogleMapsLink(name)}
+        target="_blank"
+        rel="noopener noreferrer"
         className="ml-4 flex items-center px-3 py-2 bg-white rounded-md border border-gray-200 shadow-sm hover:bg-gray-50 whitespace-nowrap"
-        onClick={() => alert(`Mostrar ${name} en el mapa`)}
-        style={{ flexShrink: 0 }}
       >
         <MapPin className="w-4 h-4 mr-2" />
         Ver en Maps
-      </button>
+      </a>
     
     </div>
   );
