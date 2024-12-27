@@ -51,6 +51,7 @@ def get_top_restaurants(
                 "name": place.get("name"),
                 "rating": place.get("rating"),
                 "address": place.get("vicinity"),
+                "open_now": place.get("opening_hours", {}).get("open_now", False),
             }
             for place in data.get("results", [])
             if place.get("rating") is not None  # Only include places with a rating
