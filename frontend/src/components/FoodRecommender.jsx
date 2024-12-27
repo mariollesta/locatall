@@ -60,12 +60,12 @@ export const FoodRecommender = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8">
+    <div className="max-w-2xl w-full">
       {!showRecommendations ? (
-        <div className="bg-white rounded-lg shadow-lg p-8 mb-6 text-center">
-          <Utensils className="mx-auto mb-6 text-gray-400" size={48} />
-          <p className="text-gray-600 mb-8">
-            Los mejores lugares para comer cerca de ti.
+        <div className="bg-white shadow-lg p-8 mb-6 border-4 border-[#4CAF50] rounded-2xl text-center">
+          <Utensils className="mx-auto mb-6 text-[#FFA500] animate-bounce" size={48} />
+          <p className="text-[#333333] mb-8 text-center text-lg font-semibold">
+            Encuentra los mejores lugares para comer
           </p>
           {error && (
             <div className="text-red-500 mb-4">
@@ -73,9 +73,9 @@ export const FoodRecommender = () => {
             </div>
           )}
           <div className="mb-8">
-            <h3 className="text-lg font-medium mb-4">Buscar por distancia</h3>
+            <h3 className="text-xl font-bold mb-4 text-center text-[#4CAF50]">¿Donde estás dispuesto a llegar?</h3>
             <div className="flex flex-col space-y-2">
-              {[{ value: "0.1", label: "A menos de 1 km" },
+              {[{ value: "1", label: "A menos de 1 km" },
                 { value: "5", label: "A menos de 5 km" },
                 { value: "10", label: "A menos de 10 km" },
               ].map((option) => (
@@ -91,7 +91,7 @@ export const FoodRecommender = () => {
                   />
                   <label
                     htmlFor={`distance-${option.value}`}
-                    className="flex flex-1 items-center justify-between rounded-lg border-2 border-gray-300 bg-gray-50 p-4 cursor-pointer hover:bg-blue-50 hover:text-blue-600 peer-checked:border-blue-500 peer-checked:bg-blue-100"
+                    className="flex flex-1 items-center justify-between rounded-xl border-2 border-[#E0E0E0] bg-[#FFFFFF] p-4 hover:bg-[#F5F5F5] hover:text-[#FFA500] peer-checked:border-[#FFA500] peer-checked:bg-[#FFF8E1] cursor-pointer transition-all"
                   >
                     {option.label}
                   </label>
@@ -105,17 +105,17 @@ export const FoodRecommender = () => {
               disabled={isLoading}
               className={`${
                 isLoading
-                  ? "cursor-not-allowed bg-blue-400"
-                  : "bg-blue-500 hover:bg-blue-600"
-              } text-white rounded-lg shadow-md px-6 py-3 font-medium transition duration-300 ease-in-out transform focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 flex items-center justify-center`}
+                  ? "cursor-not-allowed opacity-50 bg-gradient-to-r from-[#FFA500] to-[#4CAF50]"
+                  : "bg-gradient-to-r from-[#FFA500] to-[#4CAF50] hover:from-[#FF9000] hover:to-[#45a049] hover:scale-105"
+              } text-[#FFFFFF] rounded-2xl px-6 py-3 font-bold text-lg transition duration-300 ease-in-out transform focus:outline-none focus:ring-2 focus:ring-[#FFA500] focus:ring-opacity-50 flex items-center justify-center`}
             >
               {isLoading ? (
                 <>
-                  <div className="w-5 h-5 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mr-2"></div>
+                  <div className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin mr-3"></div>
                   Buscando...
                 </>
               ) : (
-                "Buscar Lugares"
+                "¡Busca la comida! 🍳"
               )}
             </button>
           </div>
@@ -126,7 +126,7 @@ export const FoodRecommender = () => {
             <ResetRecommender resetSearch={handleReset} />
           </div>
           <div className="space-y-4">
-            <h2 className="text-2xl font-semibold text-center mb-4">
+            <h2 className="text-2xl font-bold text-center mb-6 text-[#FFFFFF] shadow-text">
               {recommendations.length > 0 
                 ? `Top ${recommendations.length} recomendaciones` 
                 : "No se encontraron lugares cercanos"}
