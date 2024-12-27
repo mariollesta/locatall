@@ -13,16 +13,16 @@ if not GOOGLE_PLACES_API_KEY:
 router = APIRouter()
 
 @router.get("/restaurants")
-def get_nearby_restaurants(
+def get_top_restaurants(
     lat: float = Query(..., description="Latitude of the location"),
     lng: float = Query(..., description="Longitude of the location"),
     radius: int = Query(1000, description="Search radius in meters (default 1 km)"),
 ):
     """
-    Get nearby restaurants using Google Places API (Nearby Search - New).
+    Get the top 5 restaurants by rating using Google Places API (Nearby Search).
     """
     try:
-        # Google Places API base URL for Nearby Search (New)
+        # Google Places API base URL for Nearby Search
         url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
 
         # Request parameters
@@ -45,7 +45,7 @@ def get_nearby_restaurants(
                 detail=f"Google API Error: {data['error_message']}"
             )
 
-        # Filter relevant results
+        # Extract and sort restaurants by rating
         restaurants = [
             {
                 "name": place.get("name"),
@@ -53,9 +53,15 @@ def get_nearby_restaurants(
                 "address": place.get("vicinity"),
             }
             for place in data.get("results", [])
+            if place.get("rating") is not None  # Only include places with a rating
         ]
 
-        return {"success": True, "data": restaurants}
+        # Sort by rating (highest first) and take the top 5
+        top_restaurants = sorted(
+            restaurants, key=lambda x: x["rating"], reverse=True
+        )[:5]
+
+        return {"success": True, "data": top_restaurants}
 
     except requests.exceptions.RequestException as e:
         raise HTTPException(
