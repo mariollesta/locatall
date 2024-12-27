@@ -138,6 +138,7 @@ export const FoodRecommender = () => {
                   key={index} 
                   name={place.name} 
                   rating={place.rating} 
+                  open_now={place.open_now}
                 />
               ))
             ) : (
