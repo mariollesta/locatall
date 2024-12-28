@@ -60,7 +60,7 @@ export const FoodRecommender = () => {
   };
 
   return (
-    <div className="max-w-2xl w-full">
+    <div className="max-w-5xl mx-auto p-4">
       {!showRecommendations ? (
         <div className="bg-white shadow-lg p-8 mb-6 border-4 border-[#4CAF50] rounded-2xl text-center">
           <Utensils className="mx-auto mb-6 text-[#FFA500] animate-bounce" size={48} />

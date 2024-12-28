@@ -10,9 +10,7 @@ export function FoodRecommenderPage () {
       
       <main className="flex-grow flex flex-col items-center justify-center px-4">
         <Title />
-        <div className="max-w-md w-full">
-          <FoodRecommender />
-        </div>
+        <FoodRecommender /> 
       </main>
       
       <Footer />
