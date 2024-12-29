@@ -16,8 +16,8 @@ export function FoodResult({ name, rating, open_now }) {
             <h3 className="text-lg font-bold text-[#FFA500]">{name}</h3>
             {rating && (
               <div className="flex items-center mt-1 text-[#333333]">
-                <Star className="w-4 sm:w-5 h-4 sm:h-5 text-[#FFA500] mr-1" />
-                <span className="font-semibold text-sm sm:text-base">{rating}</span>
+                <Star className="w-4 h-4 text-[#FFA500] mr-1" />
+                <span className="font-semibold text-[#333333] mr-2">{rating}</span>
                 <span
                   className={`mt-2 sm:mt-0 sm:ml-4 text-xs sm:text-sm font-bold py-1 px-3 rounded-full ${
                     open_now ? "bg-[#4CAF50] text-white" : "bg-[#FF4C4C] text-white"
