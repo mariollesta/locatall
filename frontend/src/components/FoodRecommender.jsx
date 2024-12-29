@@ -60,7 +60,7 @@ export const FoodRecommender = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-4">
+    <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl">
       {!showRecommendations ? (
         <div className="bg-white shadow-lg p-8 mb-6 border-4 border-[#4CAF50] rounded-2xl text-center">
           <Utensils className="mx-auto mb-6 text-[#FFA500] animate-bounce" size={48} />
@@ -126,7 +126,7 @@ export const FoodRecommender = () => {
             <ResetRecommender resetSearch={handleReset} />
           </div>
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-center mb-6 text-[#FFFFFF] shadow-text">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 text-[#FFFFFF] shadow-text">
               {recommendations.length > 0 
                 ? `Top ${recommendations.length} recomendaciones` 
                 : "No se encontraron lugares cercanos"}
