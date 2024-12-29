@@ -10,11 +10,10 @@ export function FoodResult({ name, rating, open_now }) {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden border-2 border-[#E0E0E0] hover:border-[#4CAF50] transition-all duration-300 transform hover:scale-105">
       <div className="p-4 flex items-center justify-between">
-
         {/* Left: Restaurant Info Button */}
         <div className="flex">
           <div>
-            <h3 className="text-lg sm:text-xl font-bold text-[#FFA500] truncate">{name}</h3>
+            <h3 className="text-lg font-bold text-[#FFA500]">{name}</h3>
             {rating && (
               <div className="flex items-center mt-1 text-[#333333]">
                 <Star className="w-4 sm:w-5 h-4 sm:h-5 text-[#FFA500] mr-1" />
@@ -30,7 +29,6 @@ export function FoodResult({ name, rating, open_now }) {
             )}
           </div>
         </div>
-
         {/* Right: Map Button */}
         <a
           href={generateGoogleMapsLink(name)}

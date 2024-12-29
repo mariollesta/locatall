@@ -125,7 +125,7 @@ export const FoodRecommender = () => {
         </div>
       ) : (
         <>
-          <div className="mb-6 text-center">
+          <div className="mb-8 text-center">
             <ResetRecommender resetSearch={handleReset} />
           </div>
           <div className="space-y-4">
@@ -134,7 +134,6 @@ export const FoodRecommender = () => {
                 ? `Top ${recommendations.length} recomendaciones` 
                 : "No se encontraron lugares cercanos"}
             </h2>
-
             {recommendations.length > 0 ? (
               recommendations.map((place, index) => (
                 <FoodResult 
