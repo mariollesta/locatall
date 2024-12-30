@@ -58,5 +58,4 @@ ROADMAP v0.1.0
 
 Extras (opcional)
     - Analytics: Añadir seguimiento básico con Google Analytics.
-    - Dark mode: Implementar un tema oscuro con Tailwind CSS.
     - PWA: Convertir la app en una Progressive Web App para ser usada como aplicación móvil.
