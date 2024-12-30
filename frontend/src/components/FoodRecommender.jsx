@@ -48,50 +48,60 @@ function reducer(state, action) {
   }
 }
 
+// Función auxiliar: Obtener la ubicación del usuario
+const getUserLocation = () => {
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) {
+      reject("Tu navegador no soporta geolocalización.");
+    } else {
+      navigator.geolocation.getCurrentPosition(
+        (position) => resolve(position.coords),
+        () => reject("No se pudo obtener la ubicación. Por favor, inténtalo nuevamente."),
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      );
+    }
+  });
+};
+
+// Función auxiliar: Realizar la petición a la API
+const fetchRecommendations = async (latitude, longitude, radius) => {
+  const response = await axios.get("http://localhost:8000/api/restaurants", {
+    params: {
+      lat: latitude,
+      lng: longitude,
+      radius,
+    },
+  });
+  return response.data.data;
+};
+
 export const FoodRecommender = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const handleFindPlace = async () => {
-    if (!navigator.geolocation) {
-      dispatch({ type: ACTIONS.SET_ERROR, payload: "Tu navegador no soporta geolocalización." });
-      return;
-    }
-
     dispatch({ type: ACTIONS.SET_LOADING, payload: true });
     dispatch({ type: ACTIONS.SET_ERROR, payload: null });
 
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const { latitude, longitude } = position.coords;
+    try {
+      // Obtener ubicación
+      const { latitude, longitude } = await getUserLocation();
 
-        try {
-          const response = await axios.get("http://localhost:8000/api/restaurants", {
-            params: {
-              lat: latitude,
-              lng: longitude,
-              radius: state.distance * 1000,
-            },
-          });
+      // Realizar la petición a la API
+      const recommendations = await fetchRecommendations(
+        latitude,
+        longitude,
+        state.distance * 1000
+      );
 
-          dispatch({ type: ACTIONS.SET_RECOMMENDATIONS, payload: response.data.data });
-        } catch (error) {
-          dispatch({
-            type: ACTIONS.SET_ERROR,
-            payload: error.response?.data?.detail || "Error al obtener los datos.",
-          });
-        } finally {
-          dispatch({ type: ACTIONS.SET_LOADING, payload: false });
-        }
-      },
-      (error) => {
-        dispatch({
-          type: ACTIONS.SET_ERROR,
-          payload: "No se pudo obtener la ubicación. Por favor, inténtalo nuevamente.",
-        });
-        dispatch({ type: ACTIONS.SET_LOADING, payload: false });
-      },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-    );
+      dispatch({ type: ACTIONS.SET_RECOMMENDATIONS, payload: recommendations });
+    } catch (error) {
+      dispatch({
+        type: ACTIONS.SET_ERROR,
+        payload: error.message || "Error al obtener los datos.",
+      });
+    } finally {
+      dispatch({ type: ACTIONS.SET_LOADING, payload: false });
+    }
   };
 
   const handleReset = () => {
