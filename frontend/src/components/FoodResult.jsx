@@ -7,13 +7,15 @@ const generateGoogleMapsLink = (restaurantName) => {
   return `${baseUrl}${encodeURIComponent(restaurantName)}`;
 };
 
-export function FoodResult({ name, rating, open_now }) {
+export function FoodResult({ name, rating, open_now, animationClass }) {
   const statusClasses = open_now
     ? "bg-[#4CAF50] text-white"
     : "bg-[#FF4C4C] text-white";
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden border-2 border-gray-300 hover:border-green-500 transition-transform duration-300 hover:scale-105">
+    <div
+      className={`bg-white rounded-lg shadow-md overflow-hidden border-2 border-gray-300 hover:border-green-500 transition-transform duration-300 hover:scale-105 ${animationClass}`}
+    >
       <div className="p-4 flex items-center justify-between">
         {/* Información del restaurante */}
         <div>

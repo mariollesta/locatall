@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect, useState } from "react";
 import axios from "axios";
 import { Utensils } from "lucide-react";
 
@@ -78,6 +78,7 @@ const fetchRecommendations = async (latitude, longitude, radius) => {
 
 export const FoodRecommender = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [visibleIndexes, setVisibleIndexes] = useState([]);
 
   const distanceOptions = [
     { value: "1", label: "A menos de 1 km" },
@@ -113,7 +114,20 @@ export const FoodRecommender = () => {
 
   const handleReset = () => {
     dispatch({ type: ACTIONS.RESET });
+    setVisibleIndexes([]); // Reinicia las animaciones
   };
+
+  useEffect(() => {
+    if (state.showRecommendations && state.recommendations.length > 0) {
+      setVisibleIndexes([]); // Reinicia visibleIndexes
+
+      state.recommendations.forEach((_, index) => {
+        setTimeout(() => {
+          setVisibleIndexes((prev) => [...prev, index]);
+        }, index * 500); // Añade un retraso entre las animaciones
+      });
+    }
+  }, [state.recommendations, state.showRecommendations]);
 
   return (
     <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl">
@@ -178,7 +192,17 @@ export const FoodRecommender = () => {
             </h2>
             {state.recommendations.length > 0 ? (
               state.recommendations.map((place, index) => (
-                <FoodResult key={index} name={place.name} rating={place.rating} open_now={place.open_now} />
+                <FoodResult 
+                  key={index} 
+                  name={place.name} 
+                  rating={place.rating} 
+                  open_now={place.open_now} 
+                  animationClass={
+                    visibleIndexes.includes(index)
+                      ? "opacity-100 scale-100 transition-all duration-500 ease-out"
+                      : "opacity-0 scale-75"
+                  }
+                />
               ))
             ) : (
               <div className="text-center text-gray-500">
