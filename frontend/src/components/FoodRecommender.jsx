@@ -2,6 +2,7 @@ import React, { useReducer } from "react";
 import axios from "axios";
 import { Utensils } from "lucide-react";
 
+import DistanceInput from "@components/DistanceInput";
 import { ResetRecommender } from "@components/ResetRecommender";
 import { FoodResult } from "@components/FoodResult";
 
@@ -78,6 +79,12 @@ const fetchRecommendations = async (latitude, longitude, radius) => {
 export const FoodRecommender = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  const distanceOptions = [
+    { value: "1", label: "A menos de 1 km" },
+    { value: "5", label: "A menos de 5 km" },
+    { value: "10", label: "A menos de 10 km" },
+  ];
+
   const handleFindPlace = async () => {
     dispatch({ type: ACTIONS.SET_LOADING, payload: true });
     dispatch({ type: ACTIONS.SET_ERROR, payload: null });
@@ -123,30 +130,16 @@ export const FoodRecommender = () => {
                 ¿Dónde estás dispuesto a llegar?
               </h3>
               <div className="flex flex-col space-y-2">
-                {[
-                  { value: "1", label: "A menos de 1 km" },
-                  { value: "5", label: "A menos de 5 km" },
-                  { value: "10", label: "A menos de 10 km" },
-                ].map((option) => (
-                  <div key={option.value} className="flex items-center">
-                    <input
-                      type="radio"
-                      id={`distance-${option.value}`}
-                      name="distance"
-                      value={option.value}
-                      checked={state.distance === option.value}
-                      onChange={() =>
-                        dispatch({ type: ACTIONS.SET_DISTANCE, payload: option.value })
-                      }
-                      className="hidden peer"
-                    />
-                    <label
-                      htmlFor={`distance-${option.value}`}
-                      className="flex flex-1 items-center justify-between rounded-xl border-2 border-[#E0E0E0] bg-[#FFFFFF] p-4 hover:bg-[#F5F5F5] hover:text-[#FFA500] peer-checked:border-[#FFA500] peer-checked:bg-[#FFF8E1] cursor-pointer transition-all"
-                    >
-                      {option.label}
-                    </label>
-                  </div>
+                {distanceOptions.map((option) => (
+                  <DistanceInput
+                    key={option.value}
+                    value={option.value}
+                    label={option.label}
+                    selected={state.distance}
+                    onChange={(value) =>
+                      dispatch({ type: ACTIONS.SET_DISTANCE, payload: value })
+                    }
+                  />
                 ))}
               </div>
             </div>
