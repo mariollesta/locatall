@@ -113,8 +113,15 @@ export const FoodRecommender = () => {
 
   const handleReset = () => {
     dispatch({ type: ACTIONS.RESET });
-    setVisibleIndexes([]); // Reinicia las animaciones
   };
+
+  useEffect(() => {
+    if (state.showRecommendations) {
+      // Mover el foco al primer elemento de las recomendaciones
+      document.getElementById('recommendations-header')?.focus();
+    }
+  }, [state.showRecommendations]);
+  
 
 
   return (
