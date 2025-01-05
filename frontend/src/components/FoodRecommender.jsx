@@ -78,7 +78,6 @@ const fetchRecommendations = async (latitude, longitude, radius) => {
 
 export const FoodRecommender = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [visibleIndexes, setVisibleIndexes] = useState([]);
 
   const distanceOptions = [
     { value: "1", label: "A menos de 1 km" },
@@ -117,17 +116,6 @@ export const FoodRecommender = () => {
     setVisibleIndexes([]); // Reinicia las animaciones
   };
 
-  useEffect(() => {
-    if (state.showRecommendations && state.recommendations.length > 0) {
-      setVisibleIndexes([]); // Reinicia visibleIndexes
-
-      state.recommendations.forEach((_, index) => {
-        setTimeout(() => {
-          setVisibleIndexes((prev) => [...prev, index]);
-        }, index * 500); // Añade un retraso entre las animaciones
-      });
-    }
-  }, [state.recommendations, state.showRecommendations]);
 
   return (
     <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl">
@@ -141,7 +129,7 @@ export const FoodRecommender = () => {
             {state.error && <div className="text-red-500 mb-4">{state.error}</div>}
             <div className="mb-8">
               <h3 className="text-xl font-bold mb-4 text-center text-[#4CAF50]">
-                ¿Dónde estás dispuesto a llegar?
+                ¿Cómo de lejos?
               </h3>
               <div className="flex flex-col space-y-2">
                 {distanceOptions.map((option) => (
@@ -197,11 +185,6 @@ export const FoodRecommender = () => {
                   name={place.name} 
                   rating={place.rating} 
                   open_now={place.open_now} 
-                  animationClass={
-                    visibleIndexes.includes(index)
-                      ? "opacity-100 scale-100 transition-all duration-500 ease-out"
-                      : "opacity-0 scale-75"
-                  }
                 />
               ))
             ) : (
