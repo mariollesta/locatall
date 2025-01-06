@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useState } from "react";
+import React, { useReducer, useEffect } from "react";
 import axios from "axios";
 import { Utensils } from "lucide-react";
 
@@ -58,7 +58,7 @@ const getUserLocation = () => {
       navigator.geolocation.getCurrentPosition(
         (position) => resolve(position.coords),
         () => reject("No se pudo obtener la ubicación. Por favor, inténtalo nuevamente."),
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
       );
     }
   });
@@ -90,6 +90,7 @@ export const FoodRecommender = () => {
     dispatch({ type: ACTIONS.SET_ERROR, payload: null });
 
     try {
+      console.time("TotalRequestTime");
       // Obtener ubicación
       const { latitude, longitude } = await getUserLocation();
 
@@ -100,6 +101,7 @@ export const FoodRecommender = () => {
         state.distance * 1000
       );
 
+      console.timeEnd("TotalRequestTime");
       dispatch({ type: ACTIONS.SET_RECOMMENDATIONS, payload: recommendations });
     } catch (error) {
       dispatch({
@@ -180,10 +182,10 @@ export const FoodRecommender = () => {
             <ResetRecommender resetSearch={handleReset} />
           </div>
           <div className="space-y-4">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 text-[#FFFFFF] shadow-text">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 text-[#FFFFFF]">
               {state.recommendations.length > 0
                 ? `Top ${state.recommendations.length} recomendaciones`
-                : "No se encontraron lugares cercanos"}
+                : "No se encontraron lugares cercanos :("}
             </h2>
             {state.recommendations.length > 0 ? (
               state.recommendations.map((place, index) => (
@@ -195,8 +197,8 @@ export const FoodRecommender = () => {
                 />
               ))
             ) : (
-              <div className="text-center text-gray-500">
-                Ajusta la distancia de búsqueda o verifica tu ubicación
+              <div className="text-md sm:text-lg md:text-xl font-bold text-center text-white">
+                Cambia la distancia de búsqueda o verifica tu ubicación
               </div>
             )}
           </div>
