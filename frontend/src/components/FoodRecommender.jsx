@@ -1,6 +1,6 @@
 import React, { useReducer, useEffect } from "react";
 import axios from "axios";
-import { Utensils } from "lucide-react";
+import { UtensilsCrossed } from "lucide-react";
 
 import DistanceInput from "@components/DistanceInput";
 import { ResetRecommender } from "@components/ResetRecommender";
@@ -131,7 +131,7 @@ export const FoodRecommender = () => {
       {!state.showRecommendations ? (
         <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8 border-4 border-[#4CAF50]">
           <div className="p-6 sm:p-8">
-            <Utensils className="mx-auto mb-6 text-[#FFA500] animate-bounce" size={48} />
+            <UtensilsCrossed className="mx-auto mb-6 text-[#FFA500] animate-bounce" size={48} />
             <p className="text-[#333333] mb-8 text-center text-lg font-semibold">
               Encuentra los mejores lugares para comer
             </p>
