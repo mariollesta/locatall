@@ -170,7 +170,7 @@ export const FoodRecommender = () => {
                     Buscando...
                   </>
                 ) : (
-                  "¡Busca la comida! 🍳"
+                  "¡Busca! 🍳"
                 )}
               </button>
             </div>

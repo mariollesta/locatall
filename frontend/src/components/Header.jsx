@@ -1,12 +1,13 @@
 import React from "react";
-import Logo from "./Logo"; // Asegúrate de que el componente Logo esté en la misma carpeta o ajusta la ruta
+import Logo from "./Logo";
 
 const Header = () => {
   return (
     <header className="bg-gray-50 shadow-md py-4 sticky top-0 z-10">
       <div className="container mx-auto px-4 flex justify-between items-center">
-        <Logo className="text-[#ffc71b]" />
-        {/*
+        <Logo />
+        {/* Navegation not available yet */}
+        {/* 
         <nav>
           <ul className="flex space-x-4">
             <li>
@@ -33,3 +34,4 @@ const Header = () => {
 };
 
 export default Header;
+
