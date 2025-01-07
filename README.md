@@ -1,6 +1,6 @@
 <div align="center">
 
-![Banner](./banner.png)
+![Banner](./images/banner.png)
 
 ### **Find the best places to eat near you.**
 
