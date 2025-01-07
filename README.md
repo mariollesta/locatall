@@ -1,5 +1,3 @@
-# Gotoeat
-
 <div align="center">
 
 ![Banner](./banner.png)
@@ -8,11 +6,11 @@
 
 </div>
 
-## Summary
+# Gotoeat
 
-Gotoeat es una aplicación web diseñada para ayudarte a encontrar los mejores lugares para comer, basada en tu ubicación.
+Gotoeat is a web application designed to help you find the best places to eat, based on your location.
 
-## Tecnologías Utilizadas
+## Technologies
 
 [![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white&labelColor=101010)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white&labelColor=101010)](https://vitejs.dev/)
@@ -24,10 +22,8 @@ Gotoeat es una aplicación web diseñada para ayudarte a encontrar los mejores l
 [![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white&labelColor=101010)](https://vercel.com/)
 
 
-## Características
+## Features
 
-- **Búsqueda de Restaurantes**: Encuentra restaurantes cercanos basados en tu ubicación.
-- **Interfaz Simple y Dinámica**: Interfaz de usuario interactiva y responsive.
-
-## Instalación
-
+- **Restaurant Search**: Find nearby top-rated restaurants on Google based on your location.
+- **Nearby selection**: Search for restaurants at different distances (1, 5 or 10 km away).
+- **Simple and Dynamic User Interface**: Interactive and responsive user interface.
