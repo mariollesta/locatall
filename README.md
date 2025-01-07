@@ -4,7 +4,7 @@
 
 ![Banner](./banner.png)
 
-### ** Find the best places to eat near you. **
+### **Find the best places to eat near you.**
 
 </div>
 
