@@ -64,13 +64,19 @@ def get_top_restaurants(
 
         return {"success": True, "data": top_restaurants}
 
-    except requests.exceptions.RequestException as e:
+    except requests.exceptions.RequestException as e:\
+        # Handle any request-related exceptions 
         raise HTTPException(
             status_code=502,
             detail=f"Error connecting to Google Places API: {str(e)}"
         )
+    
+    except HTTPException:
+        # Re-raise the HTTPException to avoid catching it again
+        raise
 
     except Exception as e:
+        # Handle any other exceptions
         raise HTTPException(
             status_code=500,
             detail=f"An unexpected error occurred: {str(e)}"
