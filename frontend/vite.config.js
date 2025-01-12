@@ -13,5 +13,8 @@ export default defineConfig({
   server: {
     https: false, // enabling HTTPS in development
   },
+  build: {
+    outDir: 'frontend/dist',  
+  },
 });
 
