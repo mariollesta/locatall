@@ -27,3 +27,6 @@ Gotoeat is a web application designed to help you find the best places to eat, b
 - **Restaurant Search**: Find nearby top-rated restaurants on Google based on your location.
 - **Nearby selection**: Search for restaurants at different distances (1, 5 or 10 km away).
 - **Simple and Dynamic User Interface**: Interactive and responsive user interface.
+
+## Roadmap
+
