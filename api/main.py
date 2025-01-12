@@ -1,4 +1,3 @@
-import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import restaurants
@@ -17,4 +16,4 @@ app.include_router(restaurants.router, prefix="/api", tags=["restaurants"])
 
 @app.get("/")
 def read_root():
-    return {"message": "Gotoeat"}
+    return {"message": "Hello, this is Gotoeat API!"}
