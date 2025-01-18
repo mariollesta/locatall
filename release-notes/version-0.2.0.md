@@ -8,9 +8,6 @@
 - Link to Github project
 
 - Error Messages UI
-    - Design visual components for error messages (e.g., modals or alerts).
-    - Implement these components in the main flows where errors may occur.
-    - Ensure that error messages are informative and guide the user on how to resolve the problem.
 
 
 ## Fixes
