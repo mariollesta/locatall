@@ -6,7 +6,7 @@ import DistanceInput from "@components/DistanceInput";
 import { ResetRecommender } from "@components/ResetRecommender";
 import { FoodResult } from "@components/FoodResult";
 
-// Definir acciones para el reducer
+// Define reducer actions
 const ACTIONS = {
   SET_DISTANCE: "SET_DISTANCE",
   SET_LOADING: "SET_LOADING",
@@ -16,7 +16,7 @@ const ACTIONS = {
   RESET: "RESET",
 };
 
-// Reducer para gestionar el estado del componente
+// Component state reducer
 const initialState = {
   distance: "1",
   isLoading: false,
@@ -49,7 +49,7 @@ function reducer(state, action) {
   }
 }
 
-// Función auxiliar: Obtener la ubicación del usuario
+// Auxiliary function: Get user location
 const getUserLocation = () => {
   return new Promise((resolve, reject) => {
     if (!navigator.geolocation) {
@@ -57,14 +57,14 @@ const getUserLocation = () => {
     } else {
       navigator.geolocation.getCurrentPosition(
         (position) => resolve(position.coords),
-        () => reject("No se pudo obtener la ubicación. Por favor, inténtalo nuevamente."),
+        () => reject("No se pudo obtener la ubicación. Por favor, inténtalo de nuevo."),
         { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
       );
     }
   });
 };
 
-// Función auxiliar: Realizar la petición a la API
+// Auxiliary function: API request
 const fetchRecommendations = async (latitude, longitude, radius) => {
   const response = await axios.get("/api/restaurants", {
     params: {
@@ -76,7 +76,7 @@ const fetchRecommendations = async (latitude, longitude, radius) => {
   return response.data.data;
 };
 
-export const FoodRecommender = () => {
+export const FoodRecommender = ({ onError }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const distanceOptions = [
@@ -103,11 +103,11 @@ export const FoodRecommender = () => {
 
       console.timeEnd("TotalRequestTime");
       dispatch({ type: ACTIONS.SET_RECOMMENDATIONS, payload: recommendations });
+    
     } catch (error) {
-      dispatch({
-        type: ACTIONS.SET_ERROR,
-        payload: error.message || "Error al obtener los datos.",
-      });
+      const errorMessage = error.message || "";
+      dispatch({ type: ACTIONS.SET_ERROR, payload: errorMessage });
+      onError(errorMessage); 
     } finally {
       dispatch({ type: ACTIONS.SET_LOADING, payload: false });
     }
@@ -129,11 +129,11 @@ export const FoodRecommender = () => {
   return (
     <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl">
       {!state.showRecommendations ? (
-        <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8 border-4 border-[#4CAF50]">
+        <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8 border-4 border-[#4CAF50]">
           <div className="p-6 sm:p-8">
             <UtensilsCrossed className="mx-auto mb-6 text-[#FFA500] animate-bounce" size={48} />
             <p className="text-[#333333] mb-8 text-center text-lg font-semibold">
-              Encuentra los mejores lugares para comer
+              Encuentra los mejores sitios para comer
             </p>
             {state.error && <div className="text-red-500 mb-4">{state.error}</div>}
             <div className="mb-8">
