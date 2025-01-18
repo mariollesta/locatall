@@ -19,8 +19,6 @@
 
 ## Improvements
 
-- Improving text indentation
-
 - Change font app by logo font -> Poppins
 
 
