@@ -7,9 +7,6 @@
     - Install Tailwind CSS and configure the tailwind.config.js file.
     - Configure FastAPI in a Python virtual environment.
 
-
-## Features
-
 - Frontend design and implementation
     - Project structue.
     - Design the main interface 
@@ -24,17 +21,44 @@
 
 - Frontend-backend connection
 
-- Implement a ‘reset’ button (new recommendation).
+
+## Features
+
+- Navbar with app title.
+
+- Main component (Food Recommender card).
+
+- Three distance options (less than 1, 5 or 10km).
+
+- Use browser geolocation API to get user location (if he/she allows it).
+
+- Button to search the Top 5 best rated restaurants beased in the seleted location.
+
+- Label to show if the result restaurant is open or not.
 
 - Add link to open the restaurant in Google Maps from the result.
 
-- Label to show if the restaurant is open or not.
+- Implement a ‘reset’ button (new recommendation).
+
+- Footer.
 
 - Responsive Design.
+
+
+## Fixes
+
+
+
+## Improvements
 
 - Optimisation and deployment
     - Review and clean up the code.
     - Prepare backend for deployment.
     - Prepare the frontend for deployment.
-    - Publish the app.
-    - Configure environment variables in the deployment services.
+
+
+## Minor Version Changes
+
+### v-0.1.1
+
+- Update readme -> roadmap
