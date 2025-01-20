@@ -53,20 +53,37 @@ function reducer(state, action) {
 const getUserLocation = () => {
   return new Promise((resolve, reject) => {
     if (!navigator.geolocation) {
-      reject("Tu navegador no soporta geolocalización.");
+      reject(new Error("Tu navegador no soporta geolocalización."));
     } else {
       navigator.geolocation.getCurrentPosition(
         (position) => resolve(position.coords),
-        () => reject("No se pudo obtener la ubicación. Por favor, inténtalo de nuevo."),
+        (error) => {
+          // Geolocation-specific error handling
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              reject(new Error("Permiso de geolocalización denegado."));
+              break;
+            case error.POSITION_UNAVAILABLE:
+              reject(new Error("La ubicación no está disponible."));
+              break;
+            case error.TIMEOUT:
+              reject(new Error("El tiempo de espera para obtener la ubicación ha expirado."));
+              break;
+            default:
+              reject(new Error("No se pudo obtener la ubicación. Por favor, inténtalo de nuevo."));
+              break;
+          }
+        },
         { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
       );
     }
   });
 };
 
+
 // Auxiliary function: API request
 const fetchRecommendations = async (latitude, longitude, radius) => {
-  const response = await axios.get("/api/restaurants", {
+  const response = await axios.get("http://localhost:8000/api/restaurants", {
     params: {
       lat: latitude,
       lng: longitude,
@@ -91,10 +108,8 @@ export const FoodRecommender = ({ onError }) => {
 
     try {
       console.time("TotalRequestTime");
-      // Obtener ubicación
       const { latitude, longitude } = await getUserLocation();
-
-      // Realizar la petición a la API
+  
       const recommendations = await fetchRecommendations(
         latitude,
         longitude,
