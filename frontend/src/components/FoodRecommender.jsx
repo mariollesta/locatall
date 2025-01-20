@@ -1,124 +1,30 @@
-import React, { useReducer, useEffect } from "react";
-import axios from "axios";
+import React, { useReducer, useEffect, useCallback, useMemo } from "react";
 import { UtensilsCrossed } from "lucide-react";
+
+import { initialState, reducer, ACTIONS } from "@utils/foodRecommenderReducer";
+import { getUserLocation, fetchRecommendations } from "@services/api";
 
 import DistanceInput from "@components/DistanceInput";
 import { ResetRecommender } from "@components/ResetRecommender";
 import { FoodResult } from "@components/FoodResult";
 
-// Define reducer actions
-const ACTIONS = {
-  SET_DISTANCE: "SET_DISTANCE",
-  SET_LOADING: "SET_LOADING",
-  SET_ERROR: "SET_ERROR",
-  SET_LOCATION: "SET_LOCATION",
-  SET_RECOMMENDATIONS: "SET_RECOMMENDATIONS",
-  RESET: "RESET",
-};
-
-// Component state reducer
-const initialState = {
-  distance: "1",
-  isLoading: false,
-  error: null,
-  location: null,
-  recommendations: [],
-  showRecommendations: false,
-};
-
-function reducer(state, action) {
-  switch (action.type) {
-    case ACTIONS.SET_DISTANCE:
-      return { ...state, distance: action.payload };
-    case ACTIONS.SET_LOADING:
-      return { ...state, isLoading: action.payload };
-    case ACTIONS.SET_ERROR:
-      return { ...state, error: action.payload };
-    case ACTIONS.SET_LOCATION:
-      return { ...state, location: action.payload };
-    case ACTIONS.SET_RECOMMENDATIONS:
-      return {
-        ...state,
-        recommendations: action.payload,
-        showRecommendations: true,
-      };
-    case ACTIONS.RESET:
-      return initialState;
-    default:
-      return state;
-  }
-}
-
-// Auxiliary function: Get user location
-const getUserLocation = () => {
-  return new Promise((resolve, reject) => {
-    if (!navigator.geolocation) {
-      reject(new Error("Tu navegador no soporta geolocalización."));
-    } else {
-      navigator.geolocation.getCurrentPosition(
-        (position) => resolve(position.coords),
-        (error) => {
-          // Geolocation-specific error handling
-          switch (error.code) {
-            case error.PERMISSION_DENIED:
-              reject(new Error("Permiso de geolocalización denegado."));
-              break;
-            case error.POSITION_UNAVAILABLE:
-              reject(new Error("La ubicación no está disponible."));
-              break;
-            case error.TIMEOUT:
-              reject(new Error("El tiempo de espera para obtener la ubicación ha expirado."));
-              break;
-            default:
-              reject(new Error("No se pudo obtener la ubicación. Por favor, inténtalo de nuevo."));
-              break;
-          }
-        },
-        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
-      );
-    }
-  });
-};
-
-
-// Auxiliary function: API request
-const fetchRecommendations = async (latitude, longitude, radius) => {
-  const response = await axios.get("http://localhost:8000/api/restaurants", {
-    params: {
-      lat: latitude,
-      lng: longitude,
-      radius,
-    },
-  });
-  return response.data.data;
-};
-
 export const FoodRecommender = ({ onError }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const distanceOptions = [
+  const distanceOptions = useMemo(() => [
     { value: "1", label: "A menos de 1 km" },
     { value: "5", label: "A menos de 5 km" },
     { value: "10", label: "A menos de 10 km" },
-  ];
+  ], []);
 
-  const handleFindPlace = async () => {
+  const handleFindPlace = useCallback(async () => {
     dispatch({ type: ACTIONS.SET_LOADING, payload: true });
     dispatch({ type: ACTIONS.SET_ERROR, payload: null });
 
     try {
-      console.time("TotalRequestTime");
       const { latitude, longitude } = await getUserLocation();
-  
-      const recommendations = await fetchRecommendations(
-        latitude,
-        longitude,
-        state.distance * 1000
-      );
-
-      console.timeEnd("TotalRequestTime");
+      const recommendations = await fetchRecommendations(latitude, longitude, state.distance * 1000);
       dispatch({ type: ACTIONS.SET_RECOMMENDATIONS, payload: recommendations });
-    
     } catch (error) {
       const errorMessage = error.message || "";
       dispatch({ type: ACTIONS.SET_ERROR, payload: errorMessage });
@@ -126,20 +32,17 @@ export const FoodRecommender = ({ onError }) => {
     } finally {
       dispatch({ type: ACTIONS.SET_LOADING, payload: false });
     }
-  };
+  }, [state.distance, onError]);
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     dispatch({ type: ACTIONS.RESET });
-  };
+  }, []);
 
   useEffect(() => {
     if (state.showRecommendations) {
-      // Mover el foco al primer elemento de las recomendaciones
       document.getElementById('recommendations-header')?.focus();
     }
   }, [state.showRecommendations]);
-  
-
 
   return (
     <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl">
