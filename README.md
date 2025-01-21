@@ -28,10 +28,10 @@ Key features:
 [![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white&labelColor=101010)](https://vercel.com/)
 
 
-## Releases
+## Release Notes
 
-- [Version 0.1.0](./release-notes/version-0.1.0.md)
 - [Version 0.2.0](./release-notes/version-0.2.0.md)
+- [Version 0.1.0](./release-notes/version-0.1.0.md)
 
 
 ## License 

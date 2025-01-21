@@ -2,25 +2,35 @@
 
 ## Features
 
-- Immutable Title Language
-    - Ensure that the title remains constant regardless of the language of the device or browser.
+- Immutable Title Language.
 
-- Link to Github project
+- Link to Github project.
 
-- Error Messages UI
-
-
-## Fixes
-
-
+- Error Messages UI.
 
 ## Improvements
 
-- Change font app by logo font -> Poppins
+- Change font app by logo font -> Poppins.
+
+## Fixes
 
 
 ## Minor Version Changes
 
 ### v-0.2.1
 
+**Features**
 
+Geolocation errors handling.
+
+**Improvements**
+
+Code refactoring:
+    - Separate status and logic in different files.
+    - Extract auxiliary functions.
+    - Use useCallback for handleFindPlace and handleReset functions to avoid recreating them on each rendering.
+    - Use useMemo to calculate values that do not change unless their dependencies do, such as distanceOptions.
+
+**Fixes**
+
+Last result was highlighted when searching.
