@@ -17,9 +17,22 @@
 
 ## Minor Version Changes
 
-### v-0.2.2
+### v-0.2.3
 
 **Features**
+
+The recommender now search by more types of places:
+    - Restaurant
+    - Bar
+    - Cafe
+
+**Fixes**
+
+Fixed url api address.
+
+### v-0.2.2
+
+**Improvements**
 
 Add allowed origins to the api.
 
