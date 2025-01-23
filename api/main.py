@@ -2,7 +2,7 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
-from .routers import restaurants
+from .routers import foodplaces
 
 # Load variables
 load_dotenv()
@@ -20,7 +20,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(restaurants.router, prefix="/api", tags=["restaurants"])
+app.include_router(foodplaces.router, prefix="/api", tags=["foodplaces"])
 
 @app.get("/")
 def read_root():

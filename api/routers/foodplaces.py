@@ -1,0 +1,95 @@
+import os
+import requests
+from fastapi import APIRouter, HTTPException, Query
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
+# Read API key
+GOOGLE_PLACES_API_KEY = os.getenv("GOOGLE_PLACES_API_KEY")
+
+if not GOOGLE_PLACES_API_KEY:
+    raise RuntimeError("Google Places API Key not configured. Check your .env file.")
+
+router = APIRouter()
+
+@router.get("/foodplaces")
+def get_food_places(
+    lat: float = Query(..., description="Latitude of the location"),
+    lng: float = Query(..., description="Longitude of the location"),
+    radius: int = Query(1000, description="Search radius in meters (default 1 km)"),
+    place_type: str = Query("restaurant", description="Type of place to search (default: restaurant)"),
+):
+    """
+    Get the top 5 places by rating (restaurants, cafes, bars, etc.) using Google Places API.
+    """
+    try:
+        # Valid place types
+        valid_types = ["restaurant", "cafe", "bar"]
+
+        # Validate place_type
+        if place_type not in valid_types:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Invalid place type. Allowed values are: {', '.join(valid_types)}"
+            )
+
+        # Google Places API base URL for Nearby Search
+        url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
+
+        # Request parameters
+        params = {
+            "location": f"{lat},{lng}",
+            "radius": radius,
+            "type": place_type,
+            "key": GOOGLE_PLACES_API_KEY,
+        }
+
+        # Send GET request to Google Places API
+        response = requests.get(url, params=params)
+        response.raise_for_status()  # Raise HTTP errors
+
+        # Parse JSON response
+        data = response.json()
+        if "error_message" in data:
+            raise HTTPException(
+                status_code=502,
+                detail=f"Google API Error: {data['error_message']}"
+            )
+
+        # Extract and sort places by rating
+        places = [
+            {
+                "name": place.get("name"),
+                "rating": place.get("rating"),
+                "address": place.get("vicinity"),
+                "open_now": place.get("opening_hours", {}).get("open_now", False),
+            }
+            for place in data.get("results", [])
+            if place.get("rating") is not None  # Only include places with a rating
+        ]
+
+        # Sort by rating (highest first) and take the top 5
+        top_places = sorted(places, key=lambda x: x["rating"], reverse=True)[:5]
+
+        return {"success": True, "data": top_places}
+
+    except requests.exceptions.RequestException as e:
+        # Handle any request-related exceptions
+        raise HTTPException(
+            status_code=502,
+            detail=f"Error connecting to Google Places API: {str(e)}"
+        )
+
+    except HTTPException:
+        # Re-raise the HTTPException to avoid catching it again
+        raise
+
+    except Exception as e:
+        # Handle any other exceptions
+        raise HTTPException(
+            status_code=500,
+            detail=f"An unexpected error occurred: {str(e)}"
+        )
+
