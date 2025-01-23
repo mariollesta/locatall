@@ -17,6 +17,12 @@
 
 ## Minor Version Changes
 
+### v-0.2.2
+
+**Features**
+
+Allowed origins to the api.
+
 ### v-0.2.1
 
 **Features**
