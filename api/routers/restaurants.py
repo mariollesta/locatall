@@ -1,10 +1,12 @@
-from fastapi import APIRouter, HTTPException, Query
-import requests
 import os
+import requests
+from fastapi import APIRouter, HTTPException, Query
 from dotenv import load_dotenv
 
-# Load API Key from .env
+# Load variables
 load_dotenv()
+
+# Read API key
 GOOGLE_PLACES_API_KEY = os.getenv("GOOGLE_PLACES_API_KEY")
 
 if not GOOGLE_PLACES_API_KEY:
