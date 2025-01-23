@@ -32,7 +32,7 @@ export const getUserLocation = () => {
 
 // Auxiliary function: API request
 export const fetchRecommendations = async (latitude, longitude, radius) => {
-  const response = await axios.get("http://localhost:8000/api/restaurants", {
+  const response = await axios.get("/api/restaurants", {
     params: {
       lat: latitude,
       lng: longitude,
