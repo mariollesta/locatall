@@ -21,7 +21,7 @@
 
 **Features**
 
-Allowed origins to the api.
+Add allowed origins to the api.
 
 ### v-0.2.1
 
