@@ -17,7 +17,7 @@ export const initialState = {
     location: null,
     recommendations: [],
     showRecommendations: false,
-    place_type: "restaurant",
+    placeType: "restaurant",
 };
 
 export function reducer(state, action) {

@@ -1,10 +1,10 @@
 import React, { useReducer, useEffect, useCallback, useMemo } from "react";
-import { UtensilsCrossed } from "lucide-react";
+import { UtensilsCrossed, Footprints, Compass, MapPinned, Utensils, Coffee, Beer} from "lucide-react";
 
 import { initialState, reducer, ACTIONS } from "@utils/foodRecommenderReducer";
 import { getUserLocation, fetchRecommendations } from "@services/api";
 
-import DistanceInput from "@components/DistanceInput";
+import OptionGroup from "@components/OptionGroup";
 import { ResetRecommender } from "@components/ResetRecommender";
 import { FoodResult } from "@components/FoodResult";
 
@@ -12,15 +12,15 @@ export const FoodRecommender = ({ onError }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const distanceOptions = useMemo(() => [
-    { value: "1", label: "A menos de 1 km" },
-    { value: "5", label: "A menos de 5 km" },
-    { value: "10", label: "A menos de 10 km" },
+    { value: "1", label: "A menos de 1 km", icon: Footprints },
+    { value: "5", label: "A menos de 5 km", icon: MapPinned },
+    { value: "10", label: "A menos de 10 km", icon: Compass },
   ], []);
 
   const placeTypeOptions = useMemo(() => [
-    { value: "restaurant", label: "Restaurantes" },
-    { value: "cafe", label: "Cafeterías" },
-    { value: "bar", label: "Bares" },
+    { value: "restaurant", label: "Restaurantes", icon: Utensils},
+    { value: "cafe", label: "Cafeterías", icon: Coffee },
+    { value: "bar", label: "Bares", icon: Beer },
   ], []);
 
   const handleFindPlace = useCallback(async () => {
@@ -67,45 +67,27 @@ export const FoodRecommender = ({ onError }) => {
             {state.error && <div className="text-red-500 mb-4">{state.error}</div>}
 
             {/* Types of places */}
-            <div className="mb-8">
-              <h3 className="text-xl font-bold mb-4 text-center text-[#4CAF50]">
-                ¿Qué tipo de lugar estás buscando?
-              </h3>
-              <div className="flex flex-col space-y-2">
-                {placeTypeOptions.map((option) => (
-                  <DistanceInput
-                    key={option.value}
-                    value={option.value}
-                    label={option.label}
-                    selected={state.placeType}
-                    onChange={(value) =>
-                      dispatch({ type: ACTIONS.SET_PLACE_TYPE, payload: value })
-                    }
-                  />
-                ))}
-              </div>
-            </div>
+            <OptionGroup
+              header="¿Qué tipo de lugar estás buscando?"
+              name="placeType"
+              options={placeTypeOptions}
+              selected={state.placeType}
+              onChange={(value) =>
+                dispatch({ type: ACTIONS.SET_PLACE_TYPE, payload: value })
+              }
+            />
             
             {/* Distances */}
-            <div className="mb-8">
-              <h3 className="text-xl font-bold mb-4 text-center text-[#4CAF50]">
-                ¿Cómo de lejos?
-              </h3>
-              <div className="flex flex-col space-y-2">
-                {distanceOptions.map((option) => (
-                  <DistanceInput
-                    key={option.value}
-                    value={option.value}
-                    label={option.label}
-                    selected={state.distance}
-                    onChange={(value) =>
-                      dispatch({ type: ACTIONS.SET_DISTANCE, payload: value })
-                    }
-                  />
-                ))}
-              </div>
-            </div>
-            
+            <OptionGroup
+              header="¿Cómo de lejos?"
+              name="distance"
+              options={distanceOptions}
+              selected={state.distance}
+              onChange={(value) =>
+                dispatch({ type: ACTIONS.SET_DISTANCE, payload: value })
+              }
+            />
+
             <div className="flex flex-col items-center justify-center">
               <button
                 onClick={handleFindPlace}
