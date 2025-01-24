@@ -31,12 +31,13 @@ export const getUserLocation = () => {
 };
 
 // Auxiliary function: API request
-export const fetchRecommendations = async (latitude, longitude, radius) => {
-  const response = await axios.get("/api/restaurants", {
+export const fetchRecommendations = async (latitude, longitude, radius, place_type) => {
+  const response = await axios.get("/api/foodplaces", {
     params: {
       lat: latitude,
       lng: longitude,
       radius,
+      type: place_type
     },
   });
   return response.data.data;

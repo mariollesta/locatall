@@ -17,13 +17,24 @@ export const FoodRecommender = ({ onError }) => {
     { value: "10", label: "A menos de 10 km" },
   ], []);
 
+  const placeTypeOptions = useMemo(() => [
+    { value: "restaurant", label: "Restaurantes" },
+    { value: "cafe", label: "Cafeterías" },
+    { value: "bar", label: "Bares" },
+  ], []);
+
   const handleFindPlace = useCallback(async () => {
     dispatch({ type: ACTIONS.SET_LOADING, payload: true });
     dispatch({ type: ACTIONS.SET_ERROR, payload: null });
 
     try {
       const { latitude, longitude } = await getUserLocation();
-      const recommendations = await fetchRecommendations(latitude, longitude, state.distance * 1000);
+      const recommendations = await fetchRecommendations(
+        latitude, 
+        longitude, 
+        state.distance * 1000,
+        state.placeType
+      );
       dispatch({ type: ACTIONS.SET_RECOMMENDATIONS, payload: recommendations });
     } catch (error) {
       const errorMessage = error.message || "";
@@ -32,7 +43,7 @@ export const FoodRecommender = ({ onError }) => {
     } finally {
       dispatch({ type: ACTIONS.SET_LOADING, payload: false });
     }
-  }, [state.distance, onError]);
+  }, [state.distance, state.placeType, onError]);
 
   const handleReset = useCallback(() => {
     dispatch({ type: ACTIONS.RESET });
@@ -54,6 +65,28 @@ export const FoodRecommender = ({ onError }) => {
               Encuentra los mejores sitios para comer
             </p>
             {state.error && <div className="text-red-500 mb-4">{state.error}</div>}
+
+            {/* Types of places */}
+            <div className="mb-8">
+              <h3 className="text-xl font-bold mb-4 text-center text-[#4CAF50]">
+                ¿Qué tipo de lugar estás buscando?
+              </h3>
+              <div className="flex flex-col space-y-2">
+                {placeTypeOptions.map((option) => (
+                  <DistanceInput
+                    key={option.value}
+                    value={option.value}
+                    label={option.label}
+                    selected={state.placeType}
+                    onChange={(value) =>
+                      dispatch({ type: ACTIONS.SET_PLACE_TYPE, payload: value })
+                    }
+                  />
+                ))}
+              </div>
+            </div>
+            
+            {/* Distances */}
             <div className="mb-8">
               <h3 className="text-xl font-bold mb-4 text-center text-[#4CAF50]">
                 ¿Cómo de lejos?
@@ -72,6 +105,7 @@ export const FoodRecommender = ({ onError }) => {
                 ))}
               </div>
             </div>
+            
             <div className="flex flex-col items-center justify-center">
               <button
                 onClick={handleFindPlace}
