@@ -1,5 +1,5 @@
 import os
-import requests
+import httpx
 from fastapi import APIRouter, HTTPException, Query
 from dotenv import load_dotenv
 
@@ -15,7 +15,7 @@ if not GOOGLE_PLACES_API_KEY:
 router = APIRouter()
 
 @router.get("/foodplaces")
-def get_food_places(
+async def get_food_places(
     lat: float = Query(..., description="Latitude of the location"),
     lng: float = Query(..., description="Longitude of the location"),
     radius: int = Query(1000, description="Search radius in meters (default 1 km)"),
@@ -24,31 +24,34 @@ def get_food_places(
     """
     Get the top 5 places by rating (restaurants, cafes, bars, etc.) using Google Places API.
     """
+    # Valid types of places
+    valid_types = ["restaurant", "cafe", "bar"]
+
+    # Validate the type of place
+    if place_type not in valid_types:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid place type. Allowed values are: {', '.join(valid_types)}"
+        )
+
+    # Google Places API base URL for nearby searches
+    url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
+
+    # Application parameters
+    params = {
+        "location": f"{lat},{lng}",
+        "radius": radius,
+        "type": place_type,
+        "key": GOOGLE_PLACES_API_KEY,
+    }
+
     try:
-        # Valid place types
-        valid_types = ["restaurant", "cafe", "bar"]
+        # httpx to send the GET request asynchronously
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url, params=params)
 
-        # Validate place_type
-        if place_type not in valid_types:
-            raise HTTPException(
-                status_code=400,
-                detail=f"Invalid place type. Allowed values are: {', '.join(valid_types)}"
-            )
-
-        # Google Places API base URL for Nearby Search
-        url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
-
-        # Request parameters
-        params = {
-            "location": f"{lat},{lng}",
-            "radius": radius,
-            "type": place_type,
-            "key": GOOGLE_PLACES_API_KEY,
-        }
-
-        # Send GET request to Google Places API
-        response = requests.get(url, params=params)
-        response.raise_for_status()  # Raise HTTP errors
+        # Validate HTTP response
+        response.raise_for_status()
 
         # Parse JSON response
         data = response.json()
@@ -58,7 +61,7 @@ def get_food_places(
                 detail=f"Google API Error: {data['error_message']}"
             )
 
-        # Extract and sort places by rating
+        # Extract and sort places by qualification
         places = [
             {
                 "name": place.get("name"),
@@ -67,24 +70,27 @@ def get_food_places(
                 "open_now": place.get("opening_hours", {}).get("open_now", False),
             }
             for place in data.get("results", [])
-            if place.get("rating") is not None  # Only include places with a rating
+            if place.get("rating") is not None  # Solo incluir lugares con calificación
         ]
 
-        # Sort by rating (highest first) and take the top 5
+        # Sort by rating (from highest to lowest) and take the 5 best ones.
         top_places = sorted(places, key=lambda x: x["rating"], reverse=True)[:5]
 
         return {"success": True, "data": top_places}
 
-    except requests.exceptions.RequestException as e:
-        # Handle any request-related exceptions
+    except httpx.RequestError as e:
+        # Handling application-related errors
         raise HTTPException(
             status_code=502,
             detail=f"Error connecting to Google Places API: {str(e)}"
         )
 
-    except HTTPException:
-        # Re-raise the HTTPException to avoid catching it again
-        raise
+    except httpx.HTTPStatusError as e:
+        # Handling HTTP errors
+        raise HTTPException(
+            status_code=e.response.status_code,
+            detail=f"HTTP error occurred: {str(e)}"
+        )
 
     except Exception as e:
         # Handle any other exceptions
@@ -92,4 +98,3 @@ def get_food_places(
             status_code=500,
             detail=f"An unexpected error occurred: {str(e)}"
         )
-
