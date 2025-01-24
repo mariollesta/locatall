@@ -37,7 +37,7 @@ export const fetchRecommendations = async (latitude, longitude, radius, place_ty
       lat: latitude,
       lng: longitude,
       radius,
-      type: place_type
+      place_type: place_type
     },
   });
   return response.data.data;
