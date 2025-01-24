@@ -50,16 +50,43 @@ async def get_food_places(
         async with httpx.AsyncClient() as client:
             response = await client.get(url, params=params)
 
-        # Validate HTTP response
-        response.raise_for_status()
-
         # Parse JSON response
         data = response.json()
-        if "error_message" in data:
-            raise HTTPException(
-                status_code=502,
-                detail=f"Google API Error: {data['error_message']}"
-            )
+
+        # Handle Google API-specific errors based on status field in the response
+        api_status = data.get("status")
+        if api_status != "OK":
+            error_message = data.get("error_message", "Unknown error from Google Places API")
+            if api_status == "ZERO_RESULTS":
+                raise HTTPException(
+                    status_code=404,
+                    detail="No results found for the specified location and criteria."
+                )
+            elif api_status == "OVER_QUERY_LIMIT":
+                raise HTTPException(
+                    status_code=429,
+                    detail="Quota exceeded for Google Places API."
+                )
+            elif api_status == "REQUEST_DENIED":
+                raise HTTPException(
+                    status_code=403,
+                    detail=f"Request denied by Google Places API: {error_message}"
+                )
+            elif api_status == "INVALID_REQUEST":
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Invalid request sent to Google Places API: {error_message}"
+                )
+            elif api_status == "UNKNOWN_ERROR":
+                raise HTTPException(
+                    status_code=502,
+                    detail="An unknown error occurred on the Google Places API side. Please try again later."
+                )
+            else:
+                raise HTTPException(
+                    status_code=500,
+                    detail=f"Unhandled API status: {api_status}. Message: {error_message}"
+                )
 
         # Extract and sort places by qualification
         places = [
@@ -70,7 +97,7 @@ async def get_food_places(
                 "open_now": place.get("opening_hours", {}).get("open_now", False),
             }
             for place in data.get("results", [])
-            if place.get("rating") is not None  # Solo incluir lugares con calificación
+            if place.get("rating") is not None  # Include only places with ratings
         ]
 
         # Sort by rating (from highest to lowest) and take the 5 best ones.
@@ -79,14 +106,14 @@ async def get_food_places(
         return {"success": True, "data": top_places}
 
     except httpx.RequestError as e:
-        # Handling application-related errors
+        # Handle connection-related errors
         raise HTTPException(
             status_code=502,
             detail=f"Error connecting to Google Places API: {str(e)}"
         )
 
     except httpx.HTTPStatusError as e:
-        # Handling HTTP errors
+        # Handle HTTP errors
         raise HTTPException(
             status_code=e.response.status_code,
             detail=f"HTTP error occurred: {str(e)}"
