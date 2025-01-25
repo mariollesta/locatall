@@ -14,15 +14,30 @@ if not GOOGLE_PLACES_API_KEY:
 
 router = APIRouter()
 
-# Valid types of places
-VALID_PLACE_TYPES = ["cafe", "bakery", "restaurant", "bar", "meal_takeaway", "meal_delivery"]
+# Dictionary mapping own categories to their valid place_types  
+CATEGORY_TO_PLACE_TYPES = {
+    "food": ["cafe", "bakery", "bar", "restaurant", "meal_takeaway", "meal_delivery"],
+    "entertainment": ["movie_theater", "museum", "zoo", "stadium"],
+    "shopping": ["shopping_mall", "clothing_store", "supermarket", "book_store", "electronics_store"],
+    "services": ["hospital", "pharmacy", "gas_station", "parking", "train_station", "bus_station", "airport"],
+    "nightlife": ["night_club", "casino"],
+    "public_spaces": ["park", "church", "hindu_temple", "mosque", "synagogue"],
+    "others": ["gym", "library", "spa", "tourist_attraction", "aquarium"],
+}
 
-def validate_place_type(place_type: str):
-    """Validate the requested place type."""
-    if place_type not in VALID_PLACE_TYPES:
+def validate_category_and_place_type(category: str, place_type: str):
+    """
+    Validate that the category and place_type are valid and related.
+    """
+    if category not in CATEGORY_TO_PLACE_TYPES:
         raise HTTPException(
             status_code=400,
-            detail=f"Invalid place type. Allowed values are: {', '.join(VALID_PLACE_TYPES)}"
+            detail=f"Invalid category. Allowed values are: {', '.join(CATEGORY_TO_PLACE_TYPES.keys())}"
+        )
+    if place_type not in CATEGORY_TO_PLACE_TYPES[category]:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid place_type '{place_type}' for category '{category}'. Allowed values are: {', '.join(CATEGORY_TO_PLACE_TYPES[category])}"
         )
 
 
@@ -70,34 +85,36 @@ def extract_top_places(data: dict) -> list:
     return sorted(places, key=lambda x: x["rating"], reverse=True)[:5]
 
 
-@router.get("/foodplaces")
-async def get_food_places(
+@router.get("/places")
+async def get_places(
     lat: float = Query(..., description="Latitude of the location"),
     lng: float = Query(..., description="Longitude of the location"),
     radius: int = Query(1000, description="Search radius in meters (default 1 km)"),
-    place_type: str = Query("restaurant", description="Type of place to search (default: restaurant)"),
+    category: str = Query(..., description="Category of place to search"),
+    place_type: str = Query(..., description="Specific Google Place Type to search"),
 ):
     """
-    Get the top 5 places by rating (restaurants, cafes, bars, etc.) using Google Places API.
+    Get places by a specific place_type within a category using Google Places API.
     """
-    # Validate the place type
-    validate_place_type(place_type)
-
-    # Build API parameters
-    params = build_google_places_params(lat, lng, radius, place_type)
+    # Validate category and place_type
+    validate_category_and_place_type(category, place_type)
 
     try:
-        # Send request to Google Places API
+        # Build the parameters for the Google API
+        params = build_google_places_params(lat, lng, radius, place_type)
+
+        # Make the Google API request
         async with httpx.AsyncClient() as client:
             response = await client.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json", params=params)
             response.raise_for_status()
 
-        # Parse JSON response and handle API specific errors
-        data = response.json()
-        handle_google_api_errors(data)
+            # Parse the response
+            data = response.json()
+            handle_google_api_errors(data)
 
-        # Extract and return top places
-        top_places = extract_top_places(data)
+            # Extract the relevant places
+            top_places = extract_top_places(data)
+
         return {"success": True, "data": top_places}
 
     except httpx.RequestError as e:
