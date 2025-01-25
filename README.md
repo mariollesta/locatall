@@ -14,7 +14,16 @@ Key features:
 
 - **Restaurant Search**: Find nearby top-rated restaurants on Google based on your location.
 - **Nearby selection**: Search for restaurants at different distances (1, 5 or 10 km away).
+- **Search by Place Type**: Explore various types of places, such as restaurants, cafes, or bars, tailored to your preferences. 
 - **Simple and Dynamic User Interface**: Interactive and responsive user interface.
+
+
+## Release Notes
+
+- [Version 0.3.0](./release-notes/version-0.2.0.md)
+- [Version 0.2.0](./release-notes/version-0.2.0.md)
+- [Version 0.1.0](./release-notes/version-0.1.0.md)
+
 
 ## Technologies
 
@@ -26,12 +35,6 @@ Key features:
 [![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white&labelColor=101010)](https://python.org)
 
 [![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white&labelColor=101010)](https://vercel.com/)
-
-
-## Release Notes
-
-- [Version 0.2.0](./release-notes/version-0.2.0.md)
-- [Version 0.1.0](./release-notes/version-0.1.0.md)
 
 
 ## License 

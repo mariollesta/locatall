@@ -12,8 +12,6 @@
 
 - Change font app by logo font -> Poppins.
 
-## Fixes
-
 
 ## Minor Version Changes
 
