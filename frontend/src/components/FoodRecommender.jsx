@@ -14,7 +14,7 @@ export const FoodRecommender = ({ onError }) => {
   const distanceOptions = useMemo(() => [
     { value: "1", label: "A menos de 1 km", icon: Footprints },
     { value: "5", label: "A menos de 5 km", icon: MapPinned },
-    { value: "10", label: "A menos de 10 km", icon: Compass },
+    { value: "15", label: "A menos de 15 km", icon: Compass },
   ], []);
 
   const placeTypeOptions = useMemo(() => [
