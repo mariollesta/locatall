@@ -15,7 +15,7 @@ if not GOOGLE_PLACES_API_KEY:
 router = APIRouter()
 
 # Valid types of places
-VALID_PLACE_TYPES = ["restaurant", "cafe", "bar"]
+VALID_PLACE_TYPES = ["cafe", "bakery", "restaurant", "bar", "meal_takeaway", "meal_delivery"]
 
 def validate_place_type(place_type: str):
     """Validate the requested place type."""
