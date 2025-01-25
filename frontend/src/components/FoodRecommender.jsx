@@ -1,5 +1,5 @@
 import React, { useReducer, useEffect, useCallback, useMemo } from "react";
-import { UtensilsCrossed, Footprints, Compass, MapPinned, Utensils, Coffee, Beer} from "lucide-react";
+import { UtensilsCrossed, Footprints, Compass, MapPinned,  Coffee, Croissant, Utensils, Beer, Truck, Pizza} from "lucide-react";
 
 import { initialState, reducer, ACTIONS } from "@utils/foodRecommenderReducer";
 import { getUserLocation, fetchRecommendations } from "@services/api";
@@ -18,9 +18,12 @@ export const FoodRecommender = ({ onError }) => {
   ], []);
 
   const placeTypeOptions = useMemo(() => [
+    { value: "cafe", label: "Cafeterías", icon: Croissant },
+    { value: "bakery", label: "Panaderías", icon: Coffee },
     { value: "restaurant", label: "Restaurantes", icon: Utensils},
-    { value: "cafe", label: "Cafeterías", icon: Coffee },
     { value: "bar", label: "Bares", icon: Beer },
+    { value: "meal_delivery", label: "Entrega a domicilio", icon: Truck },
+    { value: "meal_delivery", label: "Para llevar", icon: Pizza },
   ], []);
 
   const handleFindPlace = useCallback(async () => {
