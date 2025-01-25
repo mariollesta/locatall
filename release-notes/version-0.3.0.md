@@ -15,3 +15,13 @@
 - More granular exception handling
 
 - Endpoint code refactoring.
+
+## Minor Version Changes
+
+### v-0.3.1
+
+**Features**
+
+- Increased the furthest search distance from 10 to 15 km.
+
+- Added bakery, meal_takeaway and meal_delivery to available search sites.
