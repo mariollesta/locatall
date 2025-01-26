@@ -1,6 +1,6 @@
 import React from "react";
 
-export function ResetRecommender ({ resetSearch }) {
+export function ResetSearch ({ resetSearch }) {
     return (
         <button
             onClick={resetSearch}

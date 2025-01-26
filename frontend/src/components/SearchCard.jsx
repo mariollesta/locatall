@@ -5,10 +5,10 @@ import { initialState, reducer, ACTIONS } from "@utils/foodRecommenderReducer";
 import { getUserLocation, fetchRecommendations } from "@services/api";
 
 import OptionGroup from "@components/OptionGroup";
-import { ResetRecommender } from "@components/ResetRecommender";
-import { FoodResult } from "@components/FoodResult";
+import { ResetSearch } from "@components/ResetSearch";
+import { ResultCard } from "@components/ResultCard";
 
-export const FoodRecommender = ({ onError }) => {
+export const SearchCard = ({ onError }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const distanceOptions = useMemo(() => [
@@ -61,12 +61,9 @@ export const FoodRecommender = ({ onError }) => {
   return (
     <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl">
       {!state.showRecommendations ? (
-        <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8 border-4 border-[#4CAF50]">
+        <div className="bg-white bg-opacity-30 backdrop-blur-lg border border-white border-opacity-30 shadow-xl rounded-lg overflow-hidden">
           <div className="p-6 sm:p-8">
-            <UtensilsCrossed className="mx-auto mb-6 text-[#FFA500] animate-bounce" size={48} />
-            <p className="text-[#333333] mb-8 text-center text-lg font-semibold">
-              Encuentra los mejores sitios para comer
-            </p>
+            <UtensilsCrossed className="mx-auto mb-6 text-[#3f2d85] animate-bounce" size={48} />
             {state.error && <div className="text-red-500 mb-4">{state.error}</div>}
 
             {/* Types of places */}
@@ -97,17 +94,17 @@ export const FoodRecommender = ({ onError }) => {
                 disabled={state.isLoading}
                 className={`${
                   state.isLoading
-                    ? "cursor-not-allowed opacity-50 bg-gradient-to-r from-[#FFA500] to-[#4CAF50]"
-                    : "bg-gradient-to-r from-[#FFA500] to-[#4CAF50] hover:from-[#FF9000] hover:to-[#45a049] hover:scale-105"
-                } text-[#FFFFFF] rounded-2xl px-6 py-3 font-bold text-lg transition duration-300 ease-in-out transform focus:outline-none focus:ring-2 focus:ring-[#FFA500] focus:ring-opacity-50 flex items-center justify-center`}
+                    ? "cursor-not-allowed opacity-50"
+                    : "bg-[#7e71e1] hover:scale-105"
+                } text-[#FFFFFF] rounded-lg shadow-md px-6 py-3 font-bold text-lg transition duration-300 ease-in-out transform focus:outline-none focus:ring-2 focus:ring-opacity-50 flex items-center justify-center`}
               >
                 {state.isLoading ? (
                   <>
-                    <div className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin mr-3"></div>
+                    <div className="w-5 h-5 border-4 border-white border-t-transparent rounded-lg animate-spin mr-3"></div>
                     Buscando...
                   </>
                 ) : (
-                  "¡Busca! 🍳"
+                  "¡Busca!"
                 )}
               </button>
             </div>
@@ -116,7 +113,7 @@ export const FoodRecommender = ({ onError }) => {
       ) : (
         <>
           <div className="mb-8 text-center">
-            <ResetRecommender resetSearch={handleReset} />
+            <ResetSearch resetSearch={handleReset} />
           </div>
           <div className="space-y-4">
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 text-[#FFFFFF]">
@@ -126,7 +123,7 @@ export const FoodRecommender = ({ onError }) => {
             </h2>
             {state.recommendations.length > 0 ? (
               state.recommendations.map((place, index) => (
-                <FoodResult 
+                <ResultCard 
                   key={index} 
                   name={place.name} 
                   rating={place.rating} 

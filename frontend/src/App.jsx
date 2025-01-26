@@ -1,9 +1,9 @@
 import React from "react";
 
-import { FoodRecommenderPage } from "@pages/FoodRecommenderPage";
+import { PlaceRecommenderPage } from "@pages/PlaceRecommenderPage";
 
 export function App() {
   return (
-    <FoodRecommenderPage />
+    <PlaceRecommenderPage />
   );
 }
