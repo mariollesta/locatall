@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import Navbar from "@components/Navbar";
 import Title from "@components/Title";
+import CategorySelector from "@components/CategorySelector";
 import { SearchCard } from "@components/SearchCard"
 import ErrorMessage from "@components/ErrorMessage";
 import Footer from "@components/Footer";
@@ -11,6 +12,7 @@ const GITHUB_LINK = "https://github.com/mariollesta/gotoeat";
 export function PlaceRecommenderPage () {
 
   const [error, setError] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const handleError = (errorMessage) => {
     setError(errorMessage);
@@ -21,6 +23,10 @@ export function PlaceRecommenderPage () {
       <Navbar />
       <main className="flex-grow flex flex-col items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
         <Title />
+        <CategorySelector
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
         {error ? (
           <ErrorMessage message={error} />
         ) : (

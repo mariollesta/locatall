@@ -1,7 +1,7 @@
 import React, { useReducer, useEffect, useCallback, useMemo } from "react";
 import { UtensilsCrossed, Footprints, Compass, MapPinned,  Coffee, Croissant, Utensils, Beer, Truck, Pizza} from "lucide-react";
 
-import { initialState, reducer, ACTIONS } from "@utils/foodRecommenderReducer";
+import { initialState, reducer, ACTIONS } from "@utils/recommenderReducer";
 import { getUserLocation, fetchRecommendations } from "@services/api";
 
 import OptionGroup from "@components/OptionGroup";
@@ -9,6 +9,7 @@ import { ResetSearch } from "@components/ResetSearch";
 import { ResultCard } from "@components/ResultCard";
 
 export const SearchCard = ({ onError }) => {
+  
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const distanceOptions = useMemo(() => [
@@ -36,6 +37,7 @@ export const SearchCard = ({ onError }) => {
         latitude, 
         longitude, 
         state.distance * 1000,
+        state.category,
         state.placeType
       );
       dispatch({ type: ACTIONS.SET_RECOMMENDATIONS, payload: recommendations });
@@ -46,7 +48,7 @@ export const SearchCard = ({ onError }) => {
     } finally {
       dispatch({ type: ACTIONS.SET_LOADING, payload: false });
     }
-  }, [state.distance, state.placeType, onError]);
+  }, [state.distance, state.category, state.placeType, onError]);
 
   const handleReset = useCallback(() => {
     dispatch({ type: ACTIONS.RESET });
