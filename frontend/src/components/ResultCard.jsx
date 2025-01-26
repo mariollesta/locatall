@@ -25,7 +25,7 @@ export function ResultCard({ name, rating, open_now }) {
               <Star className="w-4 h-4 text-[#3f2d85] mr-1" />
               <span className="font-semibold mr-2">{rating}</span>
               <span
-                className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-bold ${statusClasses}`}
+                className={`inline-flex items-center rounded-xl shadow-sm border border-white border-opacity-30 px-2.5 py-0.5 text-xs font-bold ${statusClasses}`}
                 aria-label={open_now ? "Restaurante abierto" : "Restaurante cerrado"}
               >
                 {open_now ? "Abierto" : "Cerrado"}

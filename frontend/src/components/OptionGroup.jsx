@@ -22,7 +22,7 @@ const OptionGroup = ({ header, options, selected, onChange, name }) => {
               />
               <label
                 htmlFor={`${name}-${option.value}`}
-                className="flex flex-1 items-center justify-between bg-white bg-opacity-10 backdrop-blur-lg border border-white border-opacity-30 shadow-md rounded-lg  p-4 hover:bg-[#dbdbf9] hover:text-[#3f2d85] peer-checked:border-white peer-checked:bg-[#3f2d85] peer-checked:text-white cursor-pointer transition-all"
+                className="flex flex-1 items-center justify-between p-4 bg-white bg-opacity-10 border border-white border-opacity-30 shadow-md rounded-lg hover:bg-[#dbdbf9] hover:text-[#3f2d85] peer-checked:border-white peer-checked:bg-[#3f2d85] peer-checked:text-white cursor-pointer transition-all"
               >
                 <div className="flex items-center space-x-3">
                   {Icon && (

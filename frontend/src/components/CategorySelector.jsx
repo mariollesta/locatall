@@ -18,11 +18,11 @@ export default function CategorySelector({
         <button
           key={category}
           onClick={() => setSelectedCategory(category)}
-          className={`px-4 py-2 rounded-full border border-white border-opacity-30 text-sm font-semibold transition-all duration-300
+          className={`px-4 py-2 border border-white border-opacity-30 rounded-full text-sm font-semibold transition-all duration-300
             ${
               selectedCategory === category
-                ? "bg-[#3f2d85] text-white shadow-md"
-                : "bg-[#dbdbf9] text-[#3f2d85] hover:bg-[#d1d1f5] hover:text-[#3f2d85]"
+                ? "bg-[#3f2d85] text-[#e6e6fa] shadow-md"
+                : "bg-[#f5f6fd] text-[#3f2d85] hover:bg-[#d1d1f5] hover:text-[#3f2d85]"
             }
           `}
         >
