@@ -1,11 +1,11 @@
 import React from 'react';
-import { UtensilsCrossed } from 'lucide-react';
+import { Compass } from 'lucide-react';
 
 const Logo = () => {
   return (
     <div className={"flex items-center"}>
-      <UtensilsCrossed className="w-8 h-8" style={{ color: '#4CAF50' }} />
-      <span className="ml-2 text-xl font-semibold" style={{ color: '#FFA500' }} lang="en">gotoeat</span>
+      <Compass className="w-6 h-6" style={{ color: '#3f2d85' }} />
+      <span className="ml-2 text-xl font-semibold" style={{ color: '#3f2d85' }} lang="en">locatall</span>
     </div>
   );
 };
