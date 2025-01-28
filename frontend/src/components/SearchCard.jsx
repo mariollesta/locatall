@@ -1,16 +1,18 @@
-import React, { useReducer, useEffect, useCallback, useMemo } from "react";
-import { UtensilsCrossed, Footprints, Compass, MapPinned,  Coffee, Croissant, Utensils, Beer, Truck, Pizza} from "lucide-react";
+import React, { useReducer, useEffect, useState, useCallback, useMemo } from "react";
+import { UtensilsCrossed, Footprints, Compass, MapPinned} from "lucide-react";
 
+import { CATEGORY_MAPPINGS } from "@utils/categoryMappings";
 import { initialState, reducer, ACTIONS } from "@utils/recommenderReducer";
 import { getUserLocation, fetchRecommendations } from "@services/api";
 
+import CategorySelector from "@components/CategorySelector";
 import OptionGroup from "@components/OptionGroup";
 import { ResetSearch } from "@components/ResetSearch";
 import { ResultCard } from "@components/ResultCard";
 
 export const SearchCard = ({ onError }) => {
-  
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [category, setCategory] = useState("");
 
   const distanceOptions = useMemo(() => [
     { value: "1", label: "A menos de 1 km", icon: Footprints },
@@ -18,14 +20,22 @@ export const SearchCard = ({ onError }) => {
     { value: "15", label: "A menos de 15 km", icon: Compass },
   ], []);
 
-  const placeTypeOptions = useMemo(() => [
-    { value: "cafe", label: "Cafeterías", icon: Croissant },
-    { value: "bakery", label: "Panaderías", icon: Coffee },
-    { value: "restaurant", label: "Restaurantes", icon: Utensils},
-    { value: "bar", label: "Bares", icon: Beer },
-    { value: "meal_delivery", label: "Entrega a domicilio", icon: Truck },
-    { value: "meal_delivery", label: "Para llevar", icon: Pizza },
-  ], []);
+  // Dynamically generate placeTypeOptions based on selected category
+  const placeTypeOptions = useMemo(() => {
+    if (!state.category || !CATEGORY_MAPPINGS[state.category]) {
+      return []; // Returns an empty array if no category is selected
+    }
+    return CATEGORY_MAPPINGS[state.category].placeTypes.map(({ value, label, icon }) => ({
+      value,
+      label,
+      icon,
+    }));
+  }, [state.category]);
+  
+  const handleCategoryChange = (newCategory) => {
+    setCategory(newCategory);
+    dispatch({ type: ACTIONS.SET_CATEGORY, payload: newCategory }); // Notificar al reducer
+  };
 
   const handleFindPlace = useCallback(async () => {
     dispatch({ type: ACTIONS.SET_LOADING, payload: true });
@@ -37,7 +47,7 @@ export const SearchCard = ({ onError }) => {
         latitude, 
         longitude, 
         state.distance * 1000,
-        state.category,
+        category,
         state.placeType
       );
       dispatch({ type: ACTIONS.SET_RECOMMENDATIONS, payload: recommendations });
@@ -48,7 +58,7 @@ export const SearchCard = ({ onError }) => {
     } finally {
       dispatch({ type: ACTIONS.SET_LOADING, payload: false });
     }
-  }, [state.distance, state.category, state.placeType, onError]);
+  }, [state.distance, category, state.placeType, onError]);
 
   const handleReset = useCallback(() => {
     dispatch({ type: ACTIONS.RESET });
@@ -62,6 +72,9 @@ export const SearchCard = ({ onError }) => {
 
   return (
     <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl">
+      
+      <CategorySelector onCategoryChange={handleCategoryChange} />
+
       {!state.showRecommendations ? (
         <div className="bg-white bg-opacity-30 border border-white border-opacity-30 shadow-xl rounded-lg overflow-hidden">
           <div className="p-6 sm:p-8">
