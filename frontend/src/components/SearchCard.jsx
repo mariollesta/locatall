@@ -73,7 +73,9 @@ export const SearchCard = ({ onError }) => {
   return (
     <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl">
       
-      <CategorySelector onCategoryChange={handleCategoryChange} />
+      {!state.showRecommendations && (
+        <CategorySelector onCategoryChange={handleCategoryChange} />
+      )}
 
       {!state.showRecommendations ? (
         <div className="bg-white bg-opacity-30 border border-white border-opacity-30 shadow-xl rounded-lg overflow-hidden">
