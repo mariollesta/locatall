@@ -1,24 +1,17 @@
-import React, { useState } from "react";
-import { CATEGORY_MAPPINGS } from "@utils/categoryMappings";
+import React from "react";
+import { PLACES_DATA } from "@data/placesData";
 
-export default function CategorySelector({ onCategoryChange }) {
-  const [selectedCategory, setSelectedCategory] = useState("");
-
-  const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
-    onCategoryChange(category); // Notify the parent component of the selected category
-  };
+export default function CategorySelector({ selectedCategory, onCategoryChange }) {
 
   return (
     <div>
-      {/* Category buttons */}
       <div className="flex flex-wrap justify-center gap-4 mb-8">
-        {Object.keys(CATEGORY_MAPPINGS).map((categoryKey) => {
-          const category = CATEGORY_MAPPINGS[categoryKey];
+        {Object.keys(PLACES_DATA).map((categoryKey) => {
+          const category = PLACES_DATA[categoryKey];
           return (
             <button
               key={categoryKey}
-              onClick={() => handleCategoryClick(categoryKey)}
+              onClick={() => onCategoryChange(categoryKey)} 
               className={`px-4 py-2 border border-white border-opacity-30 rounded-full text-sm font-semibold transition-all duration-300 ${
                 selectedCategory === categoryKey
                   ? "bg-[#3f2d85] text-[#e6e6fa] shadow-md"

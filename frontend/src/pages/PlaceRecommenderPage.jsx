@@ -17,7 +17,7 @@ export function PlaceRecommenderPage () {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#E6E6FA] to-[#F0F0FF] text-[#333333]">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#f5f6fd] to-[#F0F0FF] text-[#333333]">
       <Navbar />
       <main className="flex-grow flex flex-col items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
         <Title />

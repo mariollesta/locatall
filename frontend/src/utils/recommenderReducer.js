@@ -1,8 +1,7 @@
 // Define reducer actions
 export const ACTIONS = {
     SET_DISTANCE: "SET_DISTANCE",
-    SET_CATEGORY: "SET_CATEGORY",
-    SET_PLACE_TYPE: "SET_PLACE_TYPE",
+    SET_CATEGORY_AND_PLACE_TYPE: "SET_CATEGORY_AND_PLACE_TYPE",
     SET_LOADING: "SET_LOADING",
     SET_ERROR: "SET_ERROR",
     SET_LOCATION: "SET_LOCATION",
@@ -18,7 +17,7 @@ export const initialState = {
     location: null,
     recommendations: [],
     showRecommendations: false,
-    placeType: "restaurant",
+    placeType: "cafe",
     category: "food",
 };
 
@@ -26,10 +25,13 @@ export function reducer(state, action) {
     switch (action.type) {
         case ACTIONS.SET_DISTANCE:
             return { ...state, distance: action.payload };
-        case ACTIONS.SET_CATEGORY:
-            return { ...state, category: action.payload };
-        case ACTIONS.SET_PLACE_TYPE:
-            return { ...state, placeType: action.payload };
+        case ACTIONS.SET_CATEGORY_AND_PLACE_TYPE:
+            console.log("Nuevo estado:", action.payload);
+            return {
+                ...state,
+                category: action.payload.category,
+                placeType: action.payload.placeType,
+            };   
         case ACTIONS.SET_LOADING:
             return { ...state, isLoading: action.payload };
         case ACTIONS.SET_ERROR:
@@ -48,4 +50,5 @@ export function reducer(state, action) {
             return state;
     }
 }
+
   

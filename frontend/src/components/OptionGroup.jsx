@@ -1,4 +1,5 @@
 const OptionGroup = ({ header, options, selected, onChange, name }) => {
+  
   return (
     <div className="mb-8">
       {header && (
@@ -8,7 +9,9 @@ const OptionGroup = ({ header, options, selected, onChange, name }) => {
       )}
       <div className="flex flex-col space-y-2">
         {options.map((option) => {
-          const Icon = option.icon; 
+          const Icon = option.icon;
+          const isSelected = selected === option.value;
+
           return (
             <div key={option.value} className="flex items-center">
               <input
@@ -16,20 +19,25 @@ const OptionGroup = ({ header, options, selected, onChange, name }) => {
                 id={`${name}-${option.value}`}
                 name={name}
                 value={option.value}
-                checked={selected === option.value}
+                checked={isSelected}
                 onChange={() => onChange(option.value)}
-                className="hidden peer"
+                className="hidden"
               />
               <label
                 htmlFor={`${name}-${option.value}`}
-                className="flex flex-1 items-center justify-between p-4 bg-white bg-opacity-10 border border-white border-opacity-30 shadow-md rounded-lg hover:bg-[#dbdbf9] hover:text-[#3f2d85] peer-checked:border-white peer-checked:bg-[#3f2d85] peer-checked:text-white cursor-pointer transition-all"
+                className={`flex flex-1 items-center justify-between p-4 border shadow-md rounded-lg cursor-pointer transition-all
+                  ${
+                    isSelected
+                      ? "border-white bg-[#3f2d85] text-white"
+                      : "bg-white bg-opacity-10 border-white border-opacity-30 hover:bg-[#dbdbf9] hover:text-[#3f2d85]"
+                  }`}
               >
                 <div className="flex items-center space-x-3">
                   {Icon && (
-                    <Icon 
-                      className={`w-5 h-5 ${
-                        selected === option.value ? 'text-[#E6E6FA]' : 'text-[#3f2d85]'
-                      } transition-all`}
+                    <Icon
+                      className={`w-5 h-5 transition-all ${
+                        isSelected ? "text-[#E6E6FA]" : "text-[#3f2d85]"
+                      }`}
                     />
                   )}
                   <span>{option.label}</span>

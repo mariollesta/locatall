@@ -1,7 +1,7 @@
-import React, { useReducer, useEffect, useState, useCallback, useMemo } from "react";
-import { UtensilsCrossed, Footprints, Compass, MapPinned} from "lucide-react";
+import React, { useReducer, useEffect, useCallback, useMemo } from "react";
+import { UtensilsCrossed, Footprints, Compass, MapPinned } from "lucide-react";
 
-import { CATEGORY_MAPPINGS } from "@utils/categoryMappings";
+import { PLACES_DATA } from "@data/placesData";
 import { initialState, reducer, ACTIONS } from "@utils/recommenderReducer";
 import { getUserLocation, fetchRecommendations } from "@services/api";
 
@@ -12,30 +12,36 @@ import { ResultCard } from "@components/ResultCard";
 
 export const SearchCard = ({ onError }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [category, setCategory] = useState("");
 
-  const distanceOptions = useMemo(() => [
-    { value: "1", label: "A menos de 1 km", icon: Footprints },
-    { value: "5", label: "A menos de 5 km", icon: MapPinned },
-    { value: "15", label: "A menos de 15 km", icon: Compass },
-  ], []);
+  const distanceOptions = useMemo(
+    () => [
+      { value: "1", label: "A menos de 1 km", icon: Footprints },
+      { value: "5", label: "A menos de 5 km", icon: MapPinned },
+      { value: "15", label: "A menos de 15 km", icon: Compass },
+    ],
+    []
+  );
 
-  // Dynamically generate placeTypeOptions based on selected category
   const placeTypeOptions = useMemo(() => {
-    if (!state.category || !CATEGORY_MAPPINGS[state.category]) {
-      return []; // Returns an empty array if no category is selected
-    }
-    return CATEGORY_MAPPINGS[state.category].placeTypes.map(({ value, label, icon }) => ({
-      value,
-      label,
-      icon,
-    }));
+    return PLACES_DATA[state.category]?.placeTypes || [];
   }, [state.category]);
-  
+
   const handleCategoryChange = (newCategory) => {
-    setCategory(newCategory);
-    dispatch({ type: ACTIONS.SET_CATEGORY, payload: newCategory }); // Notificar al reducer
+    const firstPlaceType = PLACES_DATA[newCategory]?.placeTypes?.[0].value;
+  
+    console.log("Categoria seleccionada:", newCategory);
+    console.log("Primer placeType encontrado:", firstPlaceType);
+  
+    dispatch({
+      type: ACTIONS.SET_CATEGORY_AND_PLACE_TYPE,
+      payload: {
+        category: newCategory,
+        placeType: firstPlaceType || "", 
+      },
+    });
   };
+  
+  
 
   const handleFindPlace = useCallback(async () => {
     dispatch({ type: ACTIONS.SET_LOADING, payload: true });
@@ -44,37 +50,34 @@ export const SearchCard = ({ onError }) => {
     try {
       const { latitude, longitude } = await getUserLocation();
       const recommendations = await fetchRecommendations(
-        latitude, 
-        longitude, 
+        latitude,
+        longitude,
         state.distance * 1000,
-        category,
+        state.category,
         state.placeType
       );
       dispatch({ type: ACTIONS.SET_RECOMMENDATIONS, payload: recommendations });
     } catch (error) {
       const errorMessage = error.message || "";
       dispatch({ type: ACTIONS.SET_ERROR, payload: errorMessage });
-      onError(errorMessage); 
+      onError(errorMessage);
     } finally {
       dispatch({ type: ACTIONS.SET_LOADING, payload: false });
     }
-  }, [state.distance, category, state.placeType, onError]);
+  }, [state.distance, state.category, state.placeType, onError]);
 
   const handleReset = useCallback(() => {
     dispatch({ type: ACTIONS.RESET });
   }, []);
 
-  useEffect(() => {
-    if (state.showRecommendations) {
-      document.getElementById('recommendations-header')?.focus();
-    }
-  }, [state.showRecommendations]);
-
+  
   return (
     <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl">
-      
       {!state.showRecommendations && (
-        <CategorySelector onCategoryChange={handleCategoryChange} />
+        <CategorySelector 
+          selectedCategory={state.category} 
+          onCategoryChange={handleCategoryChange}
+       />
       )}
 
       {!state.showRecommendations ? (
@@ -83,18 +86,19 @@ export const SearchCard = ({ onError }) => {
             <UtensilsCrossed className="mx-auto mb-6 text-[#3f2d85] animate-bounce" size={48} />
             {state.error && <div className="text-red-500 mb-4">{state.error}</div>}
 
-            {/* Types of places */}
             <OptionGroup
               header="¿Qué tipo de lugar estás buscando?"
               name="placeType"
               options={placeTypeOptions}
-              selected={state.placeType}
+              selected={state.placeType || placeTypeOptions[0]?.value || ""}
               onChange={(value) =>
-                dispatch({ type: ACTIONS.SET_PLACE_TYPE, payload: value })
+                dispatch({
+                  type: ACTIONS.SET_CATEGORY_AND_PLACE_TYPE,
+                  payload: { category: state.category, placeType: value }, 
+                })
               }
             />
-            
-            {/* Distances */}
+
             <OptionGroup
               header="¿Cómo de lejos?"
               name="distance"
@@ -137,11 +141,11 @@ export const SearchCard = ({ onError }) => {
             </h2>
             {state.recommendations.length > 0 ? (
               state.recommendations.map((place, index) => (
-                <ResultCard 
-                  key={index} 
-                  name={place.name} 
-                  rating={place.rating} 
-                  open_now={place.open_now} 
+                <ResultCard
+                  key={index}
+                  name={place.name}
+                  rating={place.rating}
+                  open_now={place.open_now}
                 />
               ))
             ) : (
