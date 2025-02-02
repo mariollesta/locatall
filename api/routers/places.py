@@ -17,12 +17,13 @@ router = APIRouter()
 # Dictionary mapping own categories to their valid place_types  
 CATEGORY_TO_PLACE_TYPES = {
     "food": ["cafe", "bakery", "bar", "restaurant", "meal_takeaway", "meal_delivery"],
-    "entertainment": ["movie_theater", "museum", "zoo", "stadium"],
-    "shopping": ["shopping_mall", "clothing_store", "supermarket", "book_store", "electronics_store"],
-    "services": ["hospital", "pharmacy", "gas_station", "parking", "train_station", "bus_station", "airport"],
-    "nightlife": ["night_club", "casino"],
-    "public_spaces": ["park", "church", "hindu_temple", "mosque", "synagogue"],
-    "others": ["gym", "library", "spa", "tourist_attraction", "aquarium"],
+    "entertainment": ["stadium", "movie_theater", "amusement_park", "casino", "night_club"],
+    "shopping": ["supermarket", "shopping_mall", "department_store", "clothing_store", "book_store", "electronics_store", "florist", "furniture_store", "jewelry_store", "shoe_store", "pet_store"],
+    "public_services": ["bank", "atm", "fire_station", "library", "local_government_office", "police", "post_office"],
+    "culture": ["school", "university", "museum", "art_galery", "tourist_attraction"],
+    "nature": ["park", "rv_park", "zoo", "aquarium", "campground"],
+    "transport": ["airport", "bus_station", "subway_station", "taxy_stand", "train_station", "parking"],
+    "health": ["dentist", "doctor", "hospital", "pharmacy", "physiotherapist", "beauty_salon", "gym"],
 }
 
 def validate_category_and_place_type(category: str, place_type: str):
