@@ -73,16 +73,22 @@ def handle_google_api_errors(data: dict):
 
 def extract_top_places(data: dict) -> list:
     """Extract and sort the top 5 places by rating."""
+    results = data.get("results", [])
+
+    if not results:
+        return []  
+
     places = [
         {
-            "name": place.get("name"),
-            "rating": place.get("rating"),
-            "address": place.get("vicinity"),
+            "name": place.get("name", "Unknown"),
+            "rating": place.get("rating", 0),  
+            "address": place.get("vicinity", "No address available"),
             "open_now": place.get("opening_hours", {}).get("open_now", False),
         }
-        for place in data.get("results", [])
-        if place.get("rating") is not None  # Include only places with ratings
+        for place in results
+        if place.get("rating") is not None 
     ]
+    
     return sorted(places, key=lambda x: x["rating"], reverse=True)[:5]
 
 
@@ -97,24 +103,22 @@ async def get_places(
     """
     Get places by a specific place_type within a category using Google Places API.
     """
-    # Validate category and place_type
     validate_category_and_place_type(category, place_type)
 
     try:
-        # Build the parameters for the Google API
         params = build_google_places_params(lat, lng, radius, place_type)
 
-        # Make the Google API request
         async with httpx.AsyncClient() as client:
             response = await client.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json", params=params)
             response.raise_for_status()
 
-            # Parse the response
             data = response.json()
             handle_google_api_errors(data)
 
-            # Extract the relevant places
             top_places = extract_top_places(data)
+            
+            if not top_places:
+                return {"success": True, "data": [], "message": "No places found."}
 
         return {"success": True, "data": top_places}
 
