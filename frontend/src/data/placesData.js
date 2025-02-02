@@ -98,7 +98,7 @@ export const PLACES_DATA = {
     ],
   },
   public_services: {
-    label: "servicios",
+    label: "servicios públicos",
     placeTypes: [
       { value: "bank", label: "Banco", icon: PiggyBank },
       { value: "atm", label: "Cajero automático", icon: CreditCard },

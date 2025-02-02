@@ -16,10 +16,6 @@ const ErrorMessage = ({
           </div>
         </div>
       </div>
-      <div className="mt-4 flex items-center text-sm text-gray-500">
-        <MapPin className="h-4 w-4 mr-1" />
-        <span>La localización puede no estar activa.</span>
-      </div>
       <button
         className="mt-3 w-full bg-red-100 hover:bg-red-200 text-red-800 font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out"
         onClick={() => window.location.reload()}
