@@ -2,24 +2,26 @@
 
 ![Banner](./images/banner.png)
 
-### **Find the best places to eat near you.**
+### **Everything you need, close to you.**
 
 </div>
 
-# Gotoeat
+# Locatall
 
-Gotoeat is a web application designed to help you find the best places to eat, based on your location.
+Locatall is a web application designed to help you find the best places nearby based on your location and preferences.
 
-Key features:
+🚀 Main features
 
-- **Restaurant Search**: Find nearby top-rated restaurants on Google based on your location.
-- **Nearby selection**: Search for restaurants at different distances (1, 5 or 15 km away).
-- **Search by Place Type**: Explore various types of places, such as restaurants, cafes, or bars, tailored to your preferences. 
-- **Simple and Dynamic User Interface**: Interactive and responsive user interface.
+- 🔎 **Place Search**: Find nearby places in different categories such as food, entertainment, health, shopping and more.
+- 📍 **Filters by Category and Place Type**: Explore different types of places within each category, such as restaurants, gyms, museums, parks, etc.
+- 📏 **Distance Selection**: Search for locations in customisable radii (1 km, 5 km or 15 km). 
+- 📊 **Sorted by Popularity**: Check the best rated places in the area according to Google Places score.
+- 🎨 **Simple and Dynamic Interface**: Interactive and responsive design for a smooth experience on any device.
 
 
 ## Release Notes
 
+- [Version 0.4.0](./release-notes/version-0.4.0.md)
 - [Version 0.3.0](./release-notes/version-0.3.0.md)
 - [Version 0.2.0](./release-notes/version-0.2.0.md)
 - [Version 0.1.0](./release-notes/version-0.1.0.md)
