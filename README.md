@@ -29,6 +29,7 @@ Locatall is a web application designed to help you find the best places nearby b
 
 ## Technologies
 
+[![Javascript](https://img.shields.io/badge/Javascript-F7DF1E?style=for-the-badge&logo=react&logoColor=white&labelColor=101010)]
 [![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white&labelColor=101010)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white&labelColor=101010)](https://vitejs.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white&labelColor=101010)](https://tailwindcss.com/)
