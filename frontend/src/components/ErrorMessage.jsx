@@ -2,7 +2,7 @@ import React from 'react';
 import { AlertCircle, MapPin } from 'lucide-react';
 
 const ErrorMessage = ({ 
-  title = "¡Uy! Estamos teniendo problemillas :(", 
+  title = "¡Uy! Ha habido algún problemilla :(", 
   message 
 }) => {
   return (

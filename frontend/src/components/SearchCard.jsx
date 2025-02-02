@@ -83,7 +83,7 @@ export const SearchCard = ({ onError }) => {
       {!state.showRecommendations ? (
         <div className="bg-white bg-opacity-30 border border-white border-opacity-30 shadow-xl rounded-lg overflow-hidden">
           <div className="p-6 sm:p-8">
-            <UtensilsCrossed className="mx-auto mb-6 text-[#3f2d85] animate-bounce" size={48} />
+            {/* <UtensilsCrossed className="mx-auto mb-6 text-[#3f2d85] animate-bounce" size={48} /> */}
             {state.error && <div className="text-red-500 mb-4">{state.error}</div>}
 
             <OptionGroup
