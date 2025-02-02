@@ -41,4 +41,4 @@ Locatall is a web application designed to help you find the best places nearby b
 
 ## License 
 
-gotoeat is open-source and licensed under the [Apache License 2.0](LICENSE).
+locatall is open-source and licensed under the [Apache License 2.0](LICENSE).
