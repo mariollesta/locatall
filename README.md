@@ -21,15 +21,14 @@ Locatall is a web application designed to help you find the best places nearby b
 
 ## Release Notes
 
-- [Version 0.4.0](./release-notes/version-0.4.0.md)
-- [Version 0.3.0](./release-notes/version-0.3.0.md)
-- [Version 0.2.0](./release-notes/version-0.2.0.md)
-- [Version 0.1.0](./release-notes/version-0.1.0.md)
+You can check all versions and changelogs in the [Releases section](https://github.com/mariollesta/locatall/releases).
+
+Latest stable version: [v0.4.0](https://github.com/mariollesta/locatall/releases/tag/v0.4.0)
 
 
 ## Technologies
 
-![Javascript](https://img.shields.io/badge/Javascript-F7DF1E?style=for-the-badge&logo=react&logoColor=white&labelColor=101010)
+![JavaScript](https://img.shields.io/badge/Javascript-F7DF1E?style=for-the-badge&logo=react&logoColor=white&labelColor=101010)
 [![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white&labelColor=101010)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white&labelColor=101010)](https://vitejs.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white&labelColor=101010)](https://tailwindcss.com/)
